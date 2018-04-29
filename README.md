@@ -1,2 +1,2 @@
-# h_crawl
-house information crawl
+# kit
+crawl information kit based on scrapy
