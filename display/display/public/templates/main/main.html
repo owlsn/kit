@@ -1,0 +1,9 @@
+{%include "/header.html"%}
+   <body>
+     <ul>
+       {% for item in items %}
+         <li>{{ escape(item) }}</li>
+       {% end %}
+     </ul>
+   </body>
+   {%include "../public/footer.html"%}
