@@ -20,4 +20,5 @@ class Ip66Spider(scrapy.Spider):
                 time.sleep(1)
                 if r != None and r['code'] == 0:
                     item['ip_list'].append(r['data'])
-        yield item
+            yield item
+            return

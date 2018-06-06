@@ -8,6 +8,4 @@
 
 class IpProxyPipeline(object):
     def process_item(self, item, spider):
-        print(item)
         pass
-        return item
