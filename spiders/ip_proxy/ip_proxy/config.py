@@ -2,14 +2,13 @@
 import os
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
-
+LOG_PATH = ROOT + '/file.log'
 MYSQL = {
-    'host' : '119.27.170.185',
+    'host' : '',
     'port' : 3306,
-    'database' : 'ip_proxy',
-    'user' : 'root',
-    'passwd' : '123456',
+    'database' : '',
+    'user' : '',
+    'passwd' : '',
     'charset' : 'utf8'
 }
 
-LOG_PATH = ROOT + '/file.log'
