@@ -16,7 +16,6 @@ class Ip66Spider(scrapy.Spider):
             ip = tr.xpath('td/text()').extract_first()
             if ip != 'ip':
                 r = IpAddress.info(ip)
-                time.sleep(1)
                 if r != None and r['code'] == 0:
                     data = r['data']
                     item['ip'] = data['ip']

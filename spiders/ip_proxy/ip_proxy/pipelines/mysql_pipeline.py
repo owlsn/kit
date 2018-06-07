@@ -6,6 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from ip_proxy.config import MYSQL,LOG_PATH
+from twisted.enterprise import adbapi
 import pymysql
 import time
 import json
@@ -15,29 +16,40 @@ class MysqlPipeline(object):
 
     def __init__(self):
         self.config = MYSQL
-        self.conn = pymysql.connect(host = self.config['host'], 
-        user = self.config['user'], password = self.config['password'], 
-        database = self.config['database'], port = self.config['port'], 
-        charset = self.config['charset'])
+        dbparams = dict(
+            host = self.config['host'],
+            db = self.config['database'],
+            user = self.config['user'],
+            passwd = self.config['password'],
+            charset = self.config['charset'],
+            cursorclass = pymysql.cursors.DictCursor
+        )
+        self.dbpool = adbapi.ConnectionPool('pymysql', **dbparams)
         pass
 
 
     def process_item(self, item, spider):
-        print(item['ip'] + 'got')
-        pass
-        cursor = self.conn.cursor()
-        try:
-            sql = "insert into `ip` (`ip`, `isp`, `country`, `region`, `city`, `area`, `create_time`) values ('%s', '%s', '%s', '%s', '%s', '%s', %f);" % (item['ip'], item['isp'], item['country'], item['region'], item['city'], item['area'], time.time())
-            res = cursor.execute(sql)
-            #print(sql)
-            if res != 1:
-                raise Exception('insert failed!');
-            else :
-                self.conn.commit()
-        except Exception as e:
-            with open(LOG_PATH, 'a') as f:
-                f.write('exception:' + traceback.format_exc() + "\n")
-                f.write('item:' + json.dumps(dict(item)) + "\n")
-                f.write('sql:' + sql + "\n")
-            f.close()
+        res = self.dbpool.runInteraction(self.do_insert, item)
+        res.addErrback(self.handle_error, item, spider)
         return item
+
+    def handle_error(self, failure, item, spider):
+        with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.error.log', 'a') as f:
+            failure.trap(Exception('insert failure'))
+            f.write(traceback.format_exc())
+        f.close()
+        pass
+
+    def do_insert(self, cursor, item):
+        try:
+            insert_sql, params = item.get_insert_sql()
+            res = cursor.execute(insert_sql, params)
+            if res != 1:
+                raise Exception('insert error')
+        except Exception as e:
+            with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.error.log', 'a') as f:
+                f.write('sql:' + insert_sql + "\n")
+                f.write('params:' + json.dumps(params) + "\n")
+                f.write(traceback.format_exc())
+            f.close()
+        

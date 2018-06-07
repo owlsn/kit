@@ -6,6 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import redis
 from ip_proxy.config import REDIS,LOG_PATH
+import time
 
 class RedisPipeline(object):
 
@@ -19,7 +20,9 @@ class RedisPipeline(object):
         conn = redis.Redis(connection_pool = self.pool)
         exist = conn.get(item['ip'])
         if exist:
-            print(item['ip'] + ':exist')
-            pass
+            with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.redis.log', 'a') as f:
+                f.write(item['ip'] + "\n")
+            return item
         else:
+            conn.set(item['ip'], 1)
             return item
