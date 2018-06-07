@@ -8,7 +8,13 @@ MYSQL = {
     'port' : 3306,
     'database' : '',
     'user' : '',
-    'passwd' : '',
+    'password' : '',
     'charset' : 'utf8'
+}
+REDIS = {
+    'host' : '',
+    'port' : 6379,
+    'db' : 0,
+    'passwd' : None,
 }
 
