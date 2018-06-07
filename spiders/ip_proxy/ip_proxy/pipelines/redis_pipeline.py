@@ -8,4 +8,4 @@
 
 class RedisPipeline(object):
     def process_item(self, item, spider):
-        pass
+        return item
