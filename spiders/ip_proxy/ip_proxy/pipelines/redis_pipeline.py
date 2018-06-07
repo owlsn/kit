@@ -7,6 +7,7 @@
 import redis
 from ip_proxy.config import REDIS,LOG_PATH
 import time
+from scrapy.exceptions import DropItem
 
 class RedisPipeline(object):
 
@@ -22,7 +23,8 @@ class RedisPipeline(object):
         if exist:
             with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.redis.log', 'a') as f:
                 f.write(item['ip'] + "\n")
-            return item
+            raise DropItem('ip:' + item['ip'] + 'existed')
         else:
             conn.set(item['ip'], 1)
             return item
+
