@@ -2,19 +2,19 @@
 import os
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
-LOG_PATH = ROOT + '/file.log'
+LOG_PATH = ROOT + '/log/'
 MYSQL = {
-    'host' : '',
+    'host' : '127.0.0.1',
     'port' : 3306,
-    'database' : '',
-    'user' : '',
-    'password' : '',
+    'database' : 'ip_proxy',
+    'user' : 'root',
+    'password' : '123456',
     'charset' : 'utf8'
 }
 REDIS = {
-    'host' : '',
+    'host' : '127.0.0.1',
     'port' : 6379,
-    'db' : 0,
-    'passwd' : None,
+    'db' : 1,
+    'password' : None,
 }
 
