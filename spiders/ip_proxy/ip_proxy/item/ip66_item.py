@@ -11,5 +11,10 @@ import scrapy
 class Ip66Item(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    ip_list = scrapy.Field()
-    pass
+    ip = scrapy.Field()
+    isp = scrapy.Field()
+    country = scrapy.Field()
+    region = scrapy.Field()
+    city = scrapy.Field()
+    area = scrapy.Field()
+    create_time = scrapy.Field()

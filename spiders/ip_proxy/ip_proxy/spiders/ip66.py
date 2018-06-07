@@ -11,7 +11,6 @@ class Ip66Spider(scrapy.Spider):
 
     def parse(self, response):
         item = Ip66Item()
-        item['ip_list'] = []
         filename = response.url.split("/")[-2] + '.html'
         for tr in response.xpath('//div[@class="container"]/div/div/table/tr'):
             ip = tr.xpath('td/text()').extract_first()
@@ -19,5 +18,12 @@ class Ip66Spider(scrapy.Spider):
                 r = IpAddress.info(ip)
                 time.sleep(1)
                 if r != None and r['code'] == 0:
-                    item['ip_list'].append(r['data'])
-        return item
+                    data = r['data']
+                    item['ip'] = data['ip']
+                    item['isp'] = data['isp']
+                    item['country'] =data['country']
+                    item['city'] = data['city']
+                    item['region'] = data['region']
+                    item['area'] = data['area']
+                    item['create_time'] = time.time()
+                    yield item

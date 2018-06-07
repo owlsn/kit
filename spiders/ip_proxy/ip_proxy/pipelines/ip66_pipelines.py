@@ -13,13 +13,12 @@ class Ip66Pipeline(object):
         mysql = MysqlHelper()
         conn = mysql.conn
         cursor = conn.cursor()
-        li = item['ip_list']
+        print(item)
         try:
-            for index, value in enumerate(li):
-                sql = "insert into `ip` (`ip`, `isp`, `country`, `region`, `city`, `area`, `create_time`) values ('%s', '%s', '%s', '%s', '%s', '%s', %f);" % (value['ip'], value['isp'], value['country'], value['region'], value['city'], value['area'], time.time())
-                print(sql)
-                res = cursor.execute(sql)
-                print(res)
+            sql = "insert into `ip` (`ip`, `isp`, `country`, `region`, `city`, `area`, `create_time`) values ('%s', '%s', '%s', '%s', '%s', '%s', %f);" % (item['ip'], item['isp'], item['country'], item['region'], item['city'], item['area'], time.time())
+            print(sql)
+            res = cursor.execute(sql)
+            print(res)
             conn.commit()
         except Exception as e:
             print(e)
