@@ -65,7 +65,8 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'ip_proxy.pipelines.ip66_pipelines.Ip66Pipeline': 300,
+    'ip_proxy.pipelines.mysql_pipeline.MysqlPipeline': 300,
+    'ip_proxy.pipelines.redis_pipeline.RedisPipeline': 299,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

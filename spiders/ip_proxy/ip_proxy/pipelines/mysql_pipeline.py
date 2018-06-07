@@ -8,7 +8,7 @@
 from ip_proxy.database.mysql_helper import MysqlHelper
 import time
 
-class Ip66Pipeline(object):
+class MysqlPipeline(object):
     def process_item(self, item, spider):
         mysql = MysqlHelper()
         conn = mysql.conn

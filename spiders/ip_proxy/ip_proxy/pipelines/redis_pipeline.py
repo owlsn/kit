@@ -6,6 +6,6 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-class IpProxyPipeline(object):
+class RedisPipeline(object):
     def process_item(self, item, spider):
         pass

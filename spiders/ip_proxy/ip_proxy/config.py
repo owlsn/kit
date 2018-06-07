@@ -1,10 +1,10 @@
 # coding = utf-8
 
 MYSQL = {
-    'host' : '',
+    'host' : '119.27.170.185',
     'port' : 3306,
-    'database' : '',
-    'user' : '',
-    'passwd' : '',
+    'database' : 'ip_proxy',
+    'user' : 'root',
+    'passwd' : '123456',
     'charset' : 'utf8'
 }
