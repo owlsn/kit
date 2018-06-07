@@ -6,6 +6,7 @@ class MysqlHelper(object):
 
     def __init__(self):
         self.config = MYSQL
-        self.conn = pymysql.connect(self.config['host'], self.config['port'], self.config['user'], self.config['passwd'], self.config['database'], self.config['charset'])
-
-    
+        self.conn = pymysql.connect(host = self.config['host'], 
+        user = self.config['user'], password = self.config['passwd'], 
+        database = self.config['database'], port = self.config['port'], 
+        charset = self.config['charset'])

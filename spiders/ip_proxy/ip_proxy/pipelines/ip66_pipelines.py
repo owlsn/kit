@@ -16,12 +16,13 @@ class Ip66Pipeline(object):
         li = item['ip_list']
         try:
             for index, value in enumerate(li):
-                sql = "insert into `ip` (`ip`, `isp`, `country`, `region`, `city`, `area`, `create_time`, ) values \
-                (%s, %s, %s, %s, %s, %s, %f)" % (value['ip'], value['isp'], value['country'], value['region'], value['city'], value['area'], time.time())
+                sql = "insert into `ip` (`ip`, `isp`, `country`, `region`, `city`, `area`, `create_time`) values ('%s', '%s', '%s', '%s', '%s', '%s', %f);" % (value['ip'], value['isp'], value['country'], value['region'], value['city'], value['area'], time.time())
                 print(sql)
-                cursor.execute(sql)
-                conn.commit()
+                res = cursor.execute(sql)
+                print(res)
+            conn.commit()
         except Exception as e:
             print(e)
+            pass
         finally:
             conn.close()

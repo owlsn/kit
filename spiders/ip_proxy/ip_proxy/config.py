@@ -2,7 +2,7 @@
 
 MYSQL = {
     'host' : '119.27.170.185',
-    'port' : '3306',
+    'port' : 3306,
     'database' : 'ip_proxy',
     'user' : 'root',
     'passwd' : '123456',
