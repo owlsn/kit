@@ -4,17 +4,14 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import redis
-from ip_proxy.config import REDIS,LOG_PATH
-import time
+from ip_proxy.connection.redis_connection import RedisConnection
 from scrapy.exceptions import DropItem
 
 class RedisPipeline(object):
 
     def __init__(self):
-        self.config = REDIS
-        self.pool = redis.ConnectionPool(host = self.config['host'], port = self.config['port'],
-        db = self.config['db'], password = self.config['password'])
+        conn = RedisConnection()
+        self.pool = conn.pool
         pass
 
     def process_item(self, item, spider):

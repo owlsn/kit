@@ -5,9 +5,8 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-from ip_proxy.config import MYSQL,LOG_PATH
-from twisted.enterprise import adbapi
-import pymysql
+from ip_proxy.connection.mysql_connection import MysqlConnection
+from ip_proxy.config import LOG_PATH
 import time
 import json
 import traceback
@@ -15,16 +14,8 @@ import traceback
 class MysqlPipeline(object):
 
     def __init__(self):
-        self.config = MYSQL
-        dbparams = dict(
-            host = self.config['host'],
-            db = self.config['database'],
-            user = self.config['user'],
-            passwd = self.config['password'],
-            charset = self.config['charset'],
-            cursorclass = pymysql.cursors.DictCursor
-        )
-        self.dbpool = adbapi.ConnectionPool('pymysql', **dbparams)
+        conn = MysqlConnection()
+        self.dbpool = conn.dbpool
         pass
 
 
