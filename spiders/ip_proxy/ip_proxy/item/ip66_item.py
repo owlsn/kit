@@ -9,7 +9,7 @@ import scrapy
 import time
 import socket
 import struct
-from ip_proxy.tool.ip_address import IpAddress
+from ip_proxy.utils.ip_address import IpAddress
 
 class Ip66Item(scrapy.Item):
     # define the fields for your item here like:
