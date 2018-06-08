@@ -1,1 +1,0 @@
-"Traceback (most recent call last):\n  File \"/Users/zouhao/Documents/workspace/kit/spiders/ip_proxy/ip_proxy/connection/redis_connection.py\", line 13, in __init__\n    self.pool = redis.ConnectionPool(host = self.config['host'], port = self.config['port'],\nAttributeError: 'RedisConnection' object has no attribute 'config'\n"

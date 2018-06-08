@@ -6,7 +6,7 @@ LOG_PATH = ROOT + '/log/'
 if not os.path.exists(LOG_PATH):
     os.mkdir(LOG_PATH)
 MYSQL = {
-    'host' : '119.27.170.185',
+    'host' : '127.0.0.1',
     'port' : 3306,
     'database' : 'ip_proxy',
     'user' : 'root',
@@ -14,9 +14,9 @@ MYSQL = {
     'charset' : 'utf8'
 }
 REDIS = {
-    'host' : '119.27.170.185',
+    'host' : '127.0.0.1',
     'port' : 6379,
     'db' : 0,
-    'password' : None,
+    'password' : '',
 }
 
