@@ -8,7 +8,6 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-import random
 BOT_NAME = 'ip_proxy'
 
 SPIDER_MODULES = ['ip_proxy.spiders']
