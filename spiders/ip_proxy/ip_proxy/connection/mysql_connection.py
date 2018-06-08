@@ -5,6 +5,7 @@ from twisted.enterprise import adbapi
 import pymysql
 import traceback
 
+# twisted adbapi连接
 class MysqlConnection(object):
 
     def __init__(self):

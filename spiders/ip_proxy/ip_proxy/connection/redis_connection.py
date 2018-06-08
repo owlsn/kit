@@ -5,6 +5,7 @@ import traceback
 import time
 import json
 
+# redis连接池
 class RedisConnection(object):
 
     def __init__(self):

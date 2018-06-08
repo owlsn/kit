@@ -4,6 +4,8 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+
+# redis过滤重复ip
 from ip_proxy.connection.redis_connection import RedisConnection
 from scrapy.exceptions import DropItem
 from ip_proxy.config import LOG_PATH

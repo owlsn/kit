@@ -5,6 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
+# 将ip存入mysql数据库
 from ip_proxy.connection.mysql_connection import MysqlConnection
 from ip_proxy.config import LOG_PATH
 import time
@@ -21,8 +22,7 @@ class MysqlPipeline(object):
 
 
     def process_item(self, item, spider):
-        # insert_sql, params = item.get_insert_sql()
-        # self.dbpool.runQuery(insert_sql, params)
+        # 异步插入数据库,出现过重复插入问题,主要问题可能是多线程抓取情况下item参数传递问题,
         asyncItem = copy.deepcopy(item)
         res = self.dbpool.runInteraction(self.do_insert, asyncItem)
         res.addErrback(self.handle_error, asyncItem, spider)
