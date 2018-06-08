@@ -3,6 +3,7 @@ import scrapy
 from ip_proxy.item.ip66_item import Ip66Item
 from ip_proxy.connection.redis_connection import RedisConnection
 import time
+from ip_proxy.config import LOG_PATH
 
 class Ip66Spider(scrapy.Spider):
     name = 'ip66'
@@ -42,6 +43,8 @@ class Ip66Spider(scrapy.Spider):
             ip = td[0]
             port = td[1]
             if ip and ip != 'ip':
+                # with open(LOG_PATH + 'test.log', 'a') as f:
+                #     f.write(ip + ':' + str(id(item)) + "\n")
                 item['ip'] = ip
                 item['port'] = port
                 yield item

@@ -22,7 +22,9 @@ class MysqlPipeline(object):
 
 
     def process_item(self, item, spider):
-        # 异步插入数据库,出现过重复插入问题,主要问题可能是多线程抓取情况下item参数传递问题,
+        # 异步插入数据库,出现过重复插入问题,主要问题可能是多线程抓取情况下item参数传递问题,item内存地址相同
+        # with open(LOG_PATH + 'test.log', 'a') as f:
+        #     f.write(item['ip'] + ':' + str(id(item)) + "\n")
         asyncItem = copy.deepcopy(item)
         res = self.dbpool.runInteraction(self.do_insert, asyncItem)
         res.addErrback(self.handle_error, asyncItem, spider)
