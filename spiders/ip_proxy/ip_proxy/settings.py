@@ -16,7 +16,7 @@ NEWSPIDER_MODULE = 'ip_proxy.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT_LIST = (
+USER_AGENTS = (
     'User-Agent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36',
     'User-Agent,Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',
     'User-Agent,Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',
@@ -26,7 +26,6 @@ USER_AGENT_LIST = (
     'User-Agent,Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.11',
     'User-Agent, Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
     )
-USER_AGENT = random.sample(USER_AGENT_LIST, 1)[0]
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -56,15 +55,16 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    'ip_proxy.middlewares.IpProxySpiderMiddleware': 543,
-#}
+SPIDER_MIDDLEWARES = {
+   'ip_proxy.middlewares.ip_proxy_spider.IpProxySpiderMiddleware': 543,
+}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'ip_proxy.middlewares.IpProxyDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'ip_proxy.middlewares.ip_proxy_downloader.IpProxyDownloaderMiddleware': 543,
+   'ip_proxy.middlewares.random_user_agent.RandomUserAgentMiddleware' : 542
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html

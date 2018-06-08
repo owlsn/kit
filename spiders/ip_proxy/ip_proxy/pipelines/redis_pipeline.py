@@ -19,12 +19,12 @@ class RedisPipeline(object):
     def process_item(self, item, spider):
         exist = self.conn.get(item['ip'])
         if exist:
-            # with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.redis_exist.log', 'a') as f:
-            #     f.write(item['ip'] + "\n")
+            with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.redis_exist.log', 'a') as f:
+                f.write(item['ip'] + "\n")
             raise DropItem('ip:' + item['ip'] + 'existed')
         else:
-            # with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.redis.log', 'a') as f:
-            #     f.write(item['ip'] + "\n")
+            with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.redis.log', 'a') as f:
+                f.write(item['ip'] + "\n")
             self.conn.set(item['ip'], 1)
             return item
 

@@ -20,8 +20,10 @@ class MysqlPipeline(object):
 
 
     def process_item(self, item, spider):
-        res = self.dbpool.runInteraction(self.do_insert, item)
-        res.addErrback(self.handle_error, item, spider)
+        insert_sql, params = item.get_insert_sql()
+        self.dbpool.runQuery(insert_sql, params)
+        # res = self.dbpool.runInteraction(self.do_insert, item)
+        # res.addErrback(self.handle_error, item, spider)
         return item
 
     def handle_error(self, failure, item, spider):
