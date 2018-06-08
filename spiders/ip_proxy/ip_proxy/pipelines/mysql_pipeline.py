@@ -10,6 +10,7 @@ from ip_proxy.config import LOG_PATH
 import time
 import json
 import traceback
+import copy
 
 class MysqlPipeline(object):
 
@@ -20,16 +21,16 @@ class MysqlPipeline(object):
 
 
     def process_item(self, item, spider):
-        insert_sql, params = item.get_insert_sql()
-        self.dbpool.runQuery(insert_sql, params)
-        # res = self.dbpool.runInteraction(self.do_insert, item)
-        # res.addErrback(self.handle_error, item, spider)
+        # insert_sql, params = item.get_insert_sql()
+        # self.dbpool.runQuery(insert_sql, params)
+        asyncItem = copy.deepcopy(item)
+        res = self.dbpool.runInteraction(self.do_insert, asyncItem)
+        res.addErrback(self.handle_error, asyncItem, spider)
         return item
 
     def handle_error(self, failure, item, spider):
         with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.error.log', 'a') as f:
-            failure.trap(Exception('insert failure'))
-            f.write(traceback.format_exc())
+            f.write(str(failure))
         f.close()
         pass
 

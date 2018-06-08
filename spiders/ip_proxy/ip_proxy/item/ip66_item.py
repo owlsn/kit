@@ -34,7 +34,6 @@ class Ip66Item(scrapy.Item):
                 self['region'] = data['region']
                 self['area'] = data['area']
         insert_sql = """insert into `ip` (`ip`, `port`, `isp`, `country`, `region`, `city`, `area`, `create_time`) values (%s, %s, %s, %s, %s, %s, %s, %s);"""
-        # params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['isp'], self['country'], self['region'], self['city'], self['area'], time.time())
-        params = (self['ip'], self['port'], self['isp'], self['country'], self['region'], self['city'], self['area'], time.time())
+        params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], self['isp'], self['country'], self['region'], self['city'], self['area'], time.time())
         return insert_sql, params
             
