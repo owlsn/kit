@@ -43,8 +43,6 @@ class MysqlPipeline(object):
             if res != 1:
                 raise Exception('insert error')
         except Exception as e:
-            global insert_sql
-            global params
             with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.error.log', 'a') as f:
                 f.write('sql:' + insert_sql + "\n")
                 f.write('params:' + json.dumps(params) + "\n")
