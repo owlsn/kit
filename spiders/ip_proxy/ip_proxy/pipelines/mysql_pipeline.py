@@ -37,12 +37,14 @@ class MysqlPipeline(object):
         pass
 
     def do_insert(self, cursor, item):
+        insert_sql, params = item.get_insert_sql()
         try:
-            insert_sql, params = item.get_insert_sql()
             res = cursor.execute(insert_sql, params)
             if res != 1:
                 raise Exception('insert error')
         except Exception as e:
+            global insert_sql
+            global params
             with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.error.log', 'a') as f:
                 f.write('sql:' + insert_sql + "\n")
                 f.write('params:' + json.dumps(params) + "\n")
