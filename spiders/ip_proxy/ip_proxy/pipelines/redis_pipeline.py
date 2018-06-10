@@ -8,8 +8,8 @@
 # redis过滤重复ip
 from ip_proxy.connection.redis_connection import RedisConnection
 from scrapy.exceptions import DropItem
-from ip_proxy.config import LOG_PATH
 import time
+import logging
 
 class RedisPipeline(object):
 
@@ -20,13 +20,12 @@ class RedisPipeline(object):
 
     def process_item(self, item, spider):
         exist = self.conn.get(item['ip'])
+        logger = logging.getLogger()
         if exist:
-            with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.redis_exist.log', 'a') as f:
-                f.write(item['ip'] + "\n")
+            logger.log(logging.DEBUG, 'ip:' + item['ip'] + 'existed')
             raise DropItem('ip:' + item['ip'] + 'existed')
         else:
-            with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.redis.log', 'a') as f:
-                f.write(item['ip'] + "\n")
+            logger.log(logging.DEBUG, 'ip:' + item['ip'] + 'is new')
             self.conn.set(item['ip'], 1)
             return item
 

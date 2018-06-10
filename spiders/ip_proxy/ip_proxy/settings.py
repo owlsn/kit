@@ -9,6 +9,7 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 import time
+import os
 BOT_NAME = 'ip_proxy'
 
 SPIDER_MODULES = ['ip_proxy.spiders']
@@ -99,5 +100,8 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-LOG_LEVEL = 'WARNING'
-LOG_FILE = BOT_NAME + '/log/'  + time.strftime("%Y-%m-%d", time.localtime()) + '.log'
+LOG_LEVEL = 'INFO'
+LOG_PATH = 'log'
+if not os.path.exists(LOG_PATH):
+    os.mkdir(LOG_PATH)
+LOG_FILE = LOG_PATH + '/'  + time.strftime("%Y-%m-%d", time.localtime()) + '.log'

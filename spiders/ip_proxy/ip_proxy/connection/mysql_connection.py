@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from ip_proxy.config import MYSQL,LOG_PATH
+from ip_proxy.config import MYSQL
 from twisted.enterprise import adbapi
 import pymysql
+import logging
 import traceback
 
 # twisted adbapi连接
@@ -22,6 +23,6 @@ class MysqlConnection(object):
             self.dbpool = adbapi.ConnectionPool('pymysql', **dbparams)
             pass
         except Exception as e:
-            with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.error.log', 'a') as f:
-                f.write(traceback.format_exc)
-            f.close
+            logger = logging.getLogger()
+            logger.error(traceback.format_exc)
+            pass
