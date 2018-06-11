@@ -2,7 +2,7 @@
 import redis
 from ip_proxy.config import REDIS
 import traceback
-from ip_proxy.utils.log import Log
+from ip_proxy.utils.log import log
 import time
 import json
 
@@ -17,7 +17,7 @@ class RedisConnection(object):
             self.conn = redis.Redis(connection_pool = self.pool)
             pass
         except Exception as e:
-            logger = Log().getLogger('development')
+            logger = log.getLogger('development')
             logger.error(traceback.format_exc())
             pass
             

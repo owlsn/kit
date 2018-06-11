@@ -2,7 +2,7 @@
 import scrapy
 from ip_proxy.item.ip66_item import Ip66Item
 from ip_proxy.connection.redis_connection import RedisConnection
-from ip_proxy.utils.log import Log
+from ip_proxy.utils.log import log
 import time
 import json
 
@@ -19,7 +19,7 @@ class Ip66Spider(scrapy.Spider):
         pass
 
     def parse(self, response):
-        logger = Log().getLogger('development')
+        logger = log.getLogger('development')
         if response.url == self.base_url:
             # 解析起始页面的头部标签的url
             for li in response.xpath('//ul[@class="textlarge22"]/li'):

@@ -3,7 +3,7 @@
 import scrapy
 import requests
 import traceback
-from ip_proxy.utils.log import Log
+from ip_proxy.utils.log import log
 
 class IpTools(object):
     
@@ -34,7 +34,7 @@ class IpTools(object):
             return response
             pass
         except Exception as e:
-            logger = Log().getLogger('development')
+            logger = log.getLogger('development')
             logger.info('test')
             pass
         
