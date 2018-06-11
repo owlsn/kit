@@ -7,9 +7,9 @@
 
 # 将ip存入mysql数据库
 from ip_proxy.connection.mysql_connection import MysqlConnection
-from ip_proxy.config import LOG_PATH
 import time
 import json
+import logging
 import traceback
 import copy
 
@@ -23,29 +23,28 @@ class MysqlPipeline(object):
 
     def process_item(self, item, spider):
         # 异步插入数据库,出现过重复插入问题,主要问题可能是多线程抓取情况下item参数传递问题,item内存地址相同
-        # with open(LOG_PATH + 'test.log', 'a') as f:
-        #     f.write(item['ip'] + ':' + str(id(item)) + "\n")
+        # logger = logging.getLogger()
+        # logger.log(logging.DEBUG, json.dumps(item))
         asyncItem = copy.deepcopy(item)
         res = self.dbpool.runInteraction(self.do_insert, asyncItem)
         res.addErrback(self.handle_error, asyncItem, spider)
         return item
 
     def handle_error(self, failure, item, spider):
-        with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.error.log', 'a') as f:
-            f.write(str(failure))
-        f.close()
+        logger = logging.getLogger()
+        logger.error(str(failure))
         pass
 
     def do_insert(self, cursor, item):
+        insert_sql, params = item.get_insert_sql()
         try:
-            insert_sql, params = item.get_insert_sql()
             res = cursor.execute(insert_sql, params)
             if res != 1:
                 raise Exception('insert error')
         except Exception as e:
-            with open(LOG_PATH + time.strftime("%Y-%m-%d", time.localtime()) + '.error.log', 'a') as f:
-                f.write('sql:' + insert_sql + "\n")
-                f.write('params:' + json.dumps(params) + "\n")
-                f.write(traceback.format_exc())
-            f.close()
+            logger = logging.getLogger()
+            logger.error('sql:' + insert_sql)
+            logger.error('params:' + json.dumps(params))
+            logger.error(traceback.format_exc())
+            pass
         

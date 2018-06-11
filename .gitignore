@@ -2,4 +2,5 @@
 venv
 **/__pycache__
 .vscode
-**/config.py
+dump.rdb
+**/log
