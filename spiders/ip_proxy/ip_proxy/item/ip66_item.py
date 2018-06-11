@@ -9,7 +9,7 @@ import scrapy
 import time
 import socket
 import struct
-from ip_proxy.utils.ip_address import IpAddress
+from ip_proxy.utils.ip_tools import IpTools
 
 class Ip66Item(scrapy.Item):
     # define the fields for your item here like:
@@ -23,9 +23,10 @@ class Ip66Item(scrapy.Item):
     area = scrapy.Field()
 
     def get_insert_sql(self):
+        tool = IpTools()
         ip = self['ip']
         if ip:
-            r = IpAddress.info(ip)
+            r = tool.info(ip)
             if r != None and r['code'] == 0:
                 data = r['data']
                 self['isp'] = data['isp']
