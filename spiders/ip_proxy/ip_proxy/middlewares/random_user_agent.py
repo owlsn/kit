@@ -7,6 +7,7 @@
 
 from scrapy import signals
 import random
+# from ip_proxy.utils.log import log
 
 class RandomUserAgentMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -20,6 +21,9 @@ class RandomUserAgentMiddleware(object):
     @classmethod
     def from_crawler(cls, crawler):
         # This method is used by Scrapy to create your spiders.
+
+        # logger = log.getLogger('debug')
+        # logger.debug('random user agent')
         s = cls(crawler.settings.getlist('USER_AGENTS'))
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
         return s

@@ -1,8 +1,6 @@
 # coding = utf-8
 
-import scrapy
 import requests
-import traceback
 from ip_proxy.utils.log import log
 
 class IpTools(object):
@@ -19,23 +17,5 @@ class IpTools(object):
         else:
             return None
         pass
-
-    # 检测代理的可用性
-    # params:ip,port
-    # return:false|dict
-    def ip_check(self, ip, port, protocol = 'http'):
-        try:
-            host = ip
-            protocol = protocol
-            proxy = {
-                protocol : host + ':' + str(port)
-            }
-            response = requests.get('http://www.baidu.com', proxies = proxy, timeout = 5)
-            return response
-            pass
-        except Exception as e:
-            logger = log.getLogger('development')
-            logger.info('test')
-            pass
         
             

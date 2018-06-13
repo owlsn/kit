@@ -9,6 +9,7 @@ class Log(object):
     def __init__(self):
         self.logging = logging
         if LOG_CONFIG:
+            self.config = LOG_CONFIG
             self.logging.config.dictConfig(LOG_CONFIG)
         else:
             self.logging.basicConfig(level = logging.INFO)
