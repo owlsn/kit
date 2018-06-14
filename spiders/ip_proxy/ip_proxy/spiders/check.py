@@ -10,8 +10,9 @@ class CheckSpider(scrapy.Spider):
     start_urls = ['http://www.66ip.cn/']
 
     custom_settings = {
-        'RETRY_ENABLED': False,
         'HTTPPROXY_AUTH_ENCODING' : 'utf-8',
+        'CONCURRENT_REQUESTS' : 50,
+        'CONCURRENT_REQUESTS_PER_DOMAIN' : 50,
         'DOWNLOADER_MIDDLEWARES': {
             'ip_proxy.middlewares.random_user_agent.RandomUserAgentMiddleware' : 602,
             'ip_proxy.middlewares.ip_proxy_check.IpProxyCheckBeginMiddleware': 603,
@@ -32,26 +33,14 @@ class CheckSpider(scrapy.Spider):
 
     def parse(self, response):
         item = CheckItem()
+        item['ip'] = response.meta.get('ip')
+        item['port']  = response.meta.get('port')
+        item['delay']  = response.meta.get('delay')
         proxy = response.meta.get('proxy')
-        delay = response.meta.get('delay')
         url = response.url
         code = response.status
-        logger = log.getLogger('debug')
-        logger.debug('response-proxy:{},delay:{},url:{},code:{}'.format(proxy, delay, url, code))
+        if code == 200:
+            logger = log.getLogger('debug')
+            logger.debug('response-proxy:{},delay:{},url:{},code:{}'.format(proxy, item['delay'], url, code))
+            yield item
         pass
-
-    def parse_error(self, failure):
-        request = failure.request
-        proxy = request.meta.get('proxy')
-        logger = log.getLogger('debug')
-        logger.debug('proxy {} has been failed,{} is raised'.format(proxy, failure))
-        # crawler_logger.error('proxy {} has failed, {} is raised'.format(proxy, failure))
-        # print('proxy {} has been failed,{} is raised'.format(proxy, failure))
-        # if failure.check(TimeoutError, TCPTimedOutError):
-        #     decr = -1
-        # else:
-        #     decr = '-inf'
-
-        # items = self.set_item_queue(request.url, proxy, self.init_score, decr)
-        # for item in items:
-        #     yield item

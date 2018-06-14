@@ -39,8 +39,10 @@ class IpProxyCheckBeginMiddleware(object):
         logger.info('mysql select:' + json.dumps(res))
         ip = socket.inet_ntoa(struct.pack('I',socket.htonl(res[0])))
         port = str(res[1])
-        logger.info('ip:{},port:{}'.format(ip, port))
+        logger.info('ip:{},port:{}'.format(res[0], port))
         request.meta['proxy'] = 'http://' + ip + ':' + port
+        request.meta['ip'] = res[0]
+        request.meta['port'] = port
         request.meta['start'] = int(time.time() * 1000)
         return None
 
@@ -67,8 +69,6 @@ class IpProxyCheckEndMiddleware(object):
     def process_response(self, request, response, spider):
         delay = int(time.time() * 1000) - request.meta['start']
         request.meta['delay'] = delay
-        logger = log.getLogger('debug')
-        logger.debug('delay:' +  str(delay))
         return response
 
     def process_exception(self, request, exception, spider):
