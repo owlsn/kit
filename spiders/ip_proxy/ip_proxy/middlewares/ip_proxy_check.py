@@ -35,6 +35,8 @@ class IpProxyCheckBeginMiddleware(object):
         print(str(level))
         key = QUEUE_KEY + str(level)
         proxy = self.conn.lpop(key)
+        if not proxy:
+            return None
         logger = log.getLogger('debug')
         logger.info('redis push:{}'.format(proxy))
         ip = socket.inet_ntoa(struct.pack('I',socket.htonl(proxy['ip'])))
@@ -65,7 +67,7 @@ class IpProxyCheckEndMiddleware(object):
 
     def process_response(self, request, response, spider):
         delay = int(time.time() * 1000) - request.meta.get('start')
-        level = request.meta.get('level')
+        level = request.meta['level']
         request.meta['delay'] = delay
         request.meta['level'] = level
         return response

@@ -20,7 +20,12 @@ class CheckSpider(scrapy.Spider):
         for u in self.start_urls:
             for i in range(QUEUE_NUM):
                 self.level = i
-                yield scrapy.Request(u, meta={'level':i}, callback=self.parse,
+                length = self.conn.llen(QUEUE_KEY + str(i))
+                print('length:' + str(length))
+                print(i)
+                if length:
+                    print('start:' + str(length))
+                    yield scrapy.Request(u, meta={'level':i}, callback=self.parse,
                                         errback=self.errback_httpbin,
                                         dont_filter=True)
 
