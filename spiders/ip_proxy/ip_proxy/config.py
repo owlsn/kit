@@ -86,4 +86,6 @@ LOG_CONFIG = {
         },
     }
 }
-
+# ip队列配置
+QUEUE_NUM = 6
+QUEUE_KEY = 'ip_queue_'

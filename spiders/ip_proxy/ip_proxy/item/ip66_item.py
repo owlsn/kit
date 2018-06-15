@@ -25,6 +25,8 @@ class Ip66Item(scrapy.Item):
     def get_insert_sql(self):
         tool = IpTools()
         ip = self['ip']
+        if not self['scheme']:
+            self['scheme'] = 'http'
         if ip:
             r = tool.info(ip)
             if r != None and r['code'] == 0:

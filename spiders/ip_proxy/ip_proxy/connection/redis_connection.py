@@ -9,11 +9,15 @@ import json
 # redis连接池
 class RedisConnection(object):
 
-    def __init__(self):
+    def __init__(self, host = None, port = None, db = None, password = None):
         try:
             self.config = REDIS
-            self.pool = redis.ConnectionPool(host = self.config['host'], port = self.config['port'],
-            db = self.config['db'], password = self.config['password'])
+            self.pool = redis.ConnectionPool(
+                host = host if host else self.config['host'], 
+                port = port if port else self.config['port'],
+                db = db if db else self.config['db'], 
+                password = password if password else self.config['password']
+                )
             self.conn = redis.Redis(connection_pool = self.pool)
             pass
         except Exception as e:

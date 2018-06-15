@@ -4,6 +4,7 @@ from ip_proxy.connection.redis_connection import RedisConnection
 from ip_proxy.utils.log import log
 from ip_proxy.item.check_item import CheckItem
 from scrapy.spidermiddlewares.httperror import HttpError
+from ip_proxy.config import QUEUE_NUM
 from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError
 import time
@@ -11,18 +12,21 @@ import time
 class CheckSpider(scrapy.Spider):
     name = 'check'
     allowed_domains = ['www.66ip.cn']
+    base_url = 'http://www.66ip.cn/'
     start_urls = ['http://www.66ip.cn/']
 
     def start_requests(self):
         for u in self.start_urls:
-            yield scrapy.Request(u, callback=self.parse,
-                                    errback=self.errback_httpbin,
-                                    dont_filter=True)
+            for i in range(QUEUE_NUM)
+                self.level = i
+                yield scrapy.Request(u, meta={'level':i}, callback=self.parse,
+                                        errback=self.errback_httpbin,
+                                        dont_filter=True)
 
     custom_settings = {
         'RETRY_ENABLED' : False,
         'RETRY_TIMES' : 2,
-        'DOWNLOAD_TIMEOUT' : 30,
+        'DOWNLOAD_TIMEOUT' : 60,
         'HTTPPROXY_AUTH_ENCODING' : 'utf-8',
         'CONCURRENT_REQUESTS' : 50,
         'CONCURRENT_REQUESTS_PER_DOMAIN' : 50,
@@ -34,13 +38,12 @@ class CheckSpider(scrapy.Spider):
         'ITEM_PIPELINES': {
             'ip_proxy.pipelines.check_pipeline.CheckPipeline': 200,
         },
-        'LOG_LEVEL' : 'INFO',
-        'LOG_PATH' : log.config['handlers']['error_file_handler']['filename']
+        'LOG_LEVEL' : 'INFO'
     }
 
     def __init__(self):
         # redis连接,主要用于url判重
-        r = RedisConnection()
+        r = RedisConnection(db = 1)
         self.conn = r.conn
         pass
 
@@ -53,11 +56,17 @@ class CheckSpider(scrapy.Spider):
         proxy = response.meta.get('proxy')
         url = response.url
         code = response.status
+        level = response.meta.get('level')
         if code == 200:
             logger.debug('response-proxy:{},delay:{},url:{},code:{}'.format(proxy, item['delay'], url, code))
             yield item
         else:
             logger.debug('code:{}'.format(code))
+        length = self.conn.llen('ip_queue_' + level)
+        if length:
+            yield scrapy.Request(url, meta={'level':response.meta.get('level')}, callback=self.parse,
+                                errback=self.errback_httpbin,
+                                dont_filter=True)
         pass
     
     def errback_httpbin(self, failure):
@@ -68,7 +77,11 @@ class CheckSpider(scrapy.Spider):
         logger.info('error:{}'.format(int(time.time() * 1000)))
         logger = log.getLogger('debug')
         self.logger.error(repr(failure))
-
+        length = self.conn.llen('ip_queue_' + self.level)
+        if length:
+            yield scrapy.Request(self.base_url, meta={'level':self.level}, callback=self.parse,
+                                errback=self.errback_httpbin,
+                                dont_filter=True)
         #if isinstance(failure.value, HttpError):
         if failure.check(HttpError):
             # you can get the response

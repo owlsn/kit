@@ -7,19 +7,20 @@
 
 from scrapy import signals
 from ip_proxy.utils.log import log
-from ip_proxy.connection.mysql_connection import MysqlConnection
+from ip_proxy.connection.redis_connection import RedisConnection
 import socket
 import struct
 import json
 import time
+from ip_proxy.config import QUEUE_KEY
 
 class IpProxyCheckBeginMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
     def __init__(self):
-        c = MysqlConnection(type = 'syn')
-        self.conn = c.conn
+        r = RedisConnection(db = 1)
+        self.conn = r.conn
         pass
 
     @classmethod
@@ -30,17 +31,17 @@ class IpProxyCheckBeginMiddleware(object):
         return s
 
     def process_request(self, request, spider):
-        cursor = self.conn.cursor()
-        sql = """select ip,port from `ip` limit 20,1"""
-        cursor.execute(sql)
-        res = cursor.fetchone()
+        level = request.meta.get('level')
+        key = QUEUE_KEY + level
+        proxy = self.conn.lpush()
         logger = log.getLogger('debug')
-        logger.info('mysql select:' + json.dumps(res))
-        ip = socket.inet_ntoa(struct.pack('I',socket.htonl(res[0])))
-        port = str(res[1])
-        logger.info('ip:{},port:{}'.format(res[0], port))
-        request.meta['proxy'] = 'http://' + ip + ':' + port
-        request.meta['ip'] = res[0]
+        logger.info('redis push:' + json.dumps(proxy))
+        ip = socket.inet_ntoa(struct.pack('I',socket.htonl(proxy['ip'])))
+        port = str(proxy['port'])
+        scheme = proxy['scheme']
+        logger.info('ip:{},port:{}'.format(ip, port))
+        request.meta['proxy'] = scheme + '://' + ip + ':' + port
+        request.meta['ip'] = ip
         request.meta['port'] = port
         request.meta['start'] = int(time.time() * 1000)
         logger.info('start:{}'.format(int(time.time() * 1000)))
@@ -62,8 +63,10 @@ class IpProxyCheckEndMiddleware(object):
         return s
 
     def process_response(self, request, response, spider):
-        delay = int(time.time() * 1000) - request.meta['start']
+        delay = int(time.time() * 1000) - request.meta.get('start')
+        level = request.meta.get('level')
         request.meta['delay'] = delay
+        request.meta['level'] = level
         return response
 
     def spider_opened(self, spider):

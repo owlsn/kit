@@ -39,7 +39,7 @@ CREATE TABLE `ip` (
   `status` tinyint(4) DEFAULT '1' COMMENT '状态',
   `create_time` double unsigned DEFAULT NULL COMMENT '捕获时间',
   `update_time` double unsigned DEFAULT NULL COMMENT '更新时间',
-  `level` int(10) unsigned DEFAULT '0' COMMENT '检测优先级',
+  `level` int(10) DEFAULT '0' COMMENT '检测优先级',
   `delay` int(11) DEFAULT '-1' COMMENT '延时',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Ip列表';

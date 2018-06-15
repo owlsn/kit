@@ -9,26 +9,25 @@ import traceback
 # twisted adbapi连接
 class MysqlConnection(object):
 
-    def __init__(self, type = 'asyn'):
+    def __init__(self, type = 'asyn', host = None, db = None, user = None, passwd = None, charset = None, port = None):
         try:
             self.config = MYSQL
             if type == 'syn':
                 self.conn = pymysql.connect(
-                    host = self.config['host'],
-                    db = self.config['database'],
-                    user = self.config['user'],
-                    passwd = self.config['password'],
-                    charset = self.config['charset'],
-                    port = self.config['port']
+                    host = host if host else self.config['host'],
+                    db = db if db else self.config['database'],
+                    user = user if user else self.config['user'],
+                    passwd = passwd if passwd else self.config['password'],
+                    charset = charset if charset else self.config['charset'],
+                    port = port if port else self.config['port']
                 )
-                pass
             else:
                 dbparams = dict(
-                    host = self.config['host'],
-                    db = self.config['database'],
-                    user = self.config['user'],
-                    passwd = self.config['password'],
-                    charset = self.config['charset'],
+                    host = host if host else self.config['host'],
+                    db = db if db else self.config['database'],
+                    user = user if user else self.config['user'],
+                    passwd = passwd if passwd else self.config['password'],
+                    charset = charset if charset else self.config['charset'],
                     cursorclass = pymysql.cursors.DictCursor
                 )
                 self.dbpool = adbapi.ConnectionPool('pymysql', **dbparams)
