@@ -8,6 +8,7 @@ from ip_proxy.config import QUEUE_NUM
 from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError
 import time
+from ip_proxy.config import QUEUE_KEY
 
 class CheckSpider(scrapy.Spider):
     name = 'check'
@@ -17,7 +18,7 @@ class CheckSpider(scrapy.Spider):
 
     def start_requests(self):
         for u in self.start_urls:
-            for i in range(QUEUE_NUM)
+            for i in range(QUEUE_NUM):
                 self.level = i
                 yield scrapy.Request(u, meta={'level':i}, callback=self.parse,
                                         errback=self.errback_httpbin,
@@ -77,7 +78,8 @@ class CheckSpider(scrapy.Spider):
         logger.info('error:{}'.format(int(time.time() * 1000)))
         logger = log.getLogger('debug')
         self.logger.error(repr(failure))
-        length = self.conn.llen('ip_queue_' + self.level)
+        length = self.conn.llen(QUEUE_KEY + str(self.level))
+        print('level:' + str(self.level))
         if length:
             yield scrapy.Request(self.base_url, meta={'level':self.level}, callback=self.parse,
                                 errback=self.errback_httpbin,

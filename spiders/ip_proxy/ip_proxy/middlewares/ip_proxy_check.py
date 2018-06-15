@@ -32,10 +32,11 @@ class IpProxyCheckBeginMiddleware(object):
 
     def process_request(self, request, spider):
         level = request.meta.get('level')
-        key = QUEUE_KEY + level
-        proxy = self.conn.lpush()
+        print(str(level))
+        key = QUEUE_KEY + str(level)
+        proxy = self.conn.lpop(key)
         logger = log.getLogger('debug')
-        logger.info('redis push:' + json.dumps(proxy))
+        logger.info('redis push:{}'.format(proxy))
         ip = socket.inet_ntoa(struct.pack('I',socket.htonl(proxy['ip'])))
         port = str(proxy['port'])
         scheme = proxy['scheme']
