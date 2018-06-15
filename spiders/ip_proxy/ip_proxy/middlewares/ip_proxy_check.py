@@ -12,7 +12,6 @@ import socket
 import struct
 import json
 import time
-from twisted.internet.error import (TimeoutError, TCPTimedOutError)
 
 class IpProxyCheckBeginMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -32,7 +31,7 @@ class IpProxyCheckBeginMiddleware(object):
 
     def process_request(self, request, spider):
         cursor = self.conn.cursor()
-        sql = """select ip,port from `ip` limit 10,1"""
+        sql = """select ip,port from `ip` limit 20,1"""
         cursor.execute(sql)
         res = cursor.fetchone()
         logger = log.getLogger('debug')
@@ -44,12 +43,8 @@ class IpProxyCheckBeginMiddleware(object):
         request.meta['ip'] = res[0]
         request.meta['port'] = port
         request.meta['start'] = int(time.time() * 1000)
+        logger.info('start:{}'.format(int(time.time() * 1000)))
         return None
-
-    def process_exception(self, request, exception, spider):
-        logger = log.getLogger('debug')
-        logger.debug('begin exception: {}'.format(exception))
-        pass
 
     def spider_opened(self, spider):
         pass
@@ -70,11 +65,6 @@ class IpProxyCheckEndMiddleware(object):
         delay = int(time.time() * 1000) - request.meta['start']
         request.meta['delay'] = delay
         return response
-
-    def process_exception(self, request, exception, spider):
-        logger = log.getLogger('debug')
-        logger.debug('end exception: '.format(exception))
-        pass
 
     def spider_opened(self, spider):
         pass
