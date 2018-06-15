@@ -1,37 +1,50 @@
 # coding = utf-8
+import os
+import sys
+p = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(p)
 from ip_proxy.connection.redis_connection import RedisConnection
 from ip_proxy.connection.mysql_connection import MysqlConnection
 from ip_proxy.config import QUEUE_NUM
+import traceback
+from ip_proxy.utils.log import log
 
 class IpQueue(object):
 
     def __init__(self):
         r = RedisConnection(db = 1)
-        self.conn = r.conn
-        conn = MysqlConnection()
-        self.dbpool = conn.dbpool
+        self.redis = r.conn
+        m = MysqlConnection(type = 'syn')
+        self.mysql = m.conn
         pass
 
     def getQueue(self, level):
-        key = 'ip_queue_' + level
+        key = 'ip_queue_' + str(level)
         return key
 
-    def get_ip(self):
-        self.dbpool.runInteraction(self.do_select)
-        res.addErrback(self.handle_error)
-        pass
+    def do_select(self):
+        try:
+            sql = """select ip, port, scheme, level from `ip` order by update_time asc"""
+            cursor = self.mysql.cursor()
+            cursor.execute(sql)
+            res = cursor.fetchall()
+            for value in res:
+                if value[3] is not None:
+                    self.redis.rpush(self.getQueue(value[3]), value)
+                else:
+                    self.redis.rpush(self.getQueue(0), value)
+            pass
+        except Exception as e:
+            logger = log.getLogger('development')
+            logger.info(traceback.format_exc())
+            pass
 
-    def do_select(self, cursor):
-        sql = """select ip, port, scheme, level from `ip` order by update_time asc"""
-        res = cursor.execute(sql)
-        for value in res:
-            if value['level'] is not None:
-                self.conn.rpush(self.getQueue(value['level']), value)
-            else:
-                self.conn.rpush(self.getQueue(0), value)
+if __name__ == '__main__':
+    try:
+        ip_queue = IpQueue()
+        ip_queue.do_select()
         pass
-
-    def handle_error(self, failure, item, spider):
+    except Exception as e:
         logger = log.getLogger('development')
-        logger.error(str(failure))
+        logger.info(traceback.format_exc())
         pass
