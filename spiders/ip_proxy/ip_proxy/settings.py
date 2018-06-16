@@ -29,7 +29,7 @@ USER_AGENTS = (
     )
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -56,9 +56,9 @@ COOKIES_ENABLED = False
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-SPIDER_MIDDLEWARES = {
-   'ip_proxy.middlewares.ip_proxy_spider.IpProxySpiderMiddleware': 543,
-}
+# SPIDER_MIDDLEWARES = {
+#    'ip_proxy.middlewares.ip_proxy_spider.IpProxySpiderMiddleware': 543,
+# }
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html

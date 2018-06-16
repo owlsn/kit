@@ -16,6 +16,9 @@ REDIS = {
     'db' : 0,
     'password' : '',
 }
+LOG_PATH =  ROOT + "/log/"
+if not os.path.exists(LOG_PATH):
+    os.mkdir(LOG_PATH)
 LOG_CONFIG = {
     "version":1,
     "disable_existing_loggers":False,
@@ -35,7 +38,7 @@ LOG_CONFIG = {
             "class":"logging.handlers.RotatingFileHandler",
             "level":"DEBUG",
             "formatter":"simple",
-            "filename": ROOT + "/log/"+time.strftime("%Y-%m-%d", time.localtime())+".debug.log",
+            "filename": LOG_PATH + time.strftime("%Y-%m-%d", time.localtime())+".debug.log",
             "maxBytes":10485760,
             "backupCount":20,
             "encoding":"utf8"
@@ -44,7 +47,7 @@ LOG_CONFIG = {
             "class":"logging.handlers.RotatingFileHandler",
             "level":"INFO",
             "formatter":"simple",
-            "filename": ROOT + "/log/"+time.strftime("%Y-%m-%d", time.localtime())+".info.log",
+            "filename": LOG_PATH + time.strftime("%Y-%m-%d", time.localtime())+".info.log",
             "maxBytes":10485760,
             "backupCount":20,
             "encoding":"utf8"
@@ -53,7 +56,7 @@ LOG_CONFIG = {
             "class":"logging.handlers.RotatingFileHandler",
             "level":"WARNING",
             "formatter":"simple",
-            "filename":ROOT + "/log/"+time.strftime("%Y-%m-%d", time.localtime())+".warnings.log",
+            "filename":LOG_PATH + time.strftime("%Y-%m-%d", time.localtime())+".warnings.log",
             "maxBytes":10485760,
             "backupCount":20,
             "encoding":"utf8"
@@ -62,7 +65,7 @@ LOG_CONFIG = {
             "class":"logging.handlers.RotatingFileHandler",
             "level":"ERROR",
             "formatter":"simple",
-            "filename":ROOT + "/log/"+time.strftime("%Y-%m-%d", time.localtime())+".errors.log",
+            "filename":LOG_PATH + time.strftime("%Y-%m-%d", time.localtime())+".errors.log",
             "maxBytes":10485760,
             "backupCount":20,
             "encoding":"utf8"

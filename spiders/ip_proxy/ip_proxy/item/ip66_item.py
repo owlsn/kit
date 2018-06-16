@@ -21,11 +21,12 @@ class Ip66Item(scrapy.Item):
     region = scrapy.Field()
     city = scrapy.Field()
     area = scrapy.Field()
+    scheme = scrapy.Field()
 
     def get_insert_sql(self):
         tool = IpTools()
         ip = self['ip']
-        if not self['scheme']:
+        if not 'scheme' in self.keys() or self['scheme'] is None:
             self['scheme'] = 'http'
         if ip:
             r = tool.info(ip)
@@ -36,7 +37,15 @@ class Ip66Item(scrapy.Item):
                 self['city'] = data['city']
                 self['region'] = data['region']
                 self['area'] = data['area']
-        insert_sql = """insert into `ip` (`ip`, `port`, `isp`, `country`, `region`, `city`, `area`, `create_time`) values (%s, %s, %s, %s, %s, %s, %s, %s);"""
-        params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], self['isp'], self['country'], self['region'], self['city'], self['area'], time.time())
-        return insert_sql, params
+            else:
+                self['isp'] = ''
+                self['country'] = ''
+                self['city'] = ''
+                self['region'] = ''
+                self['area'] = ''
+            insert_sql = """insert into `ip` (`ip`, `port`, `isp`, `country`, `region`, `city`, `area`, `create_time`, `scheme`, `delay`, `level`) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], self['isp'], self['country'], self['region'], self['city'], self['area'], time.time(), self['scheme'], -1, 0)
+            return insert_sql, params
+        else:
+            return None
             

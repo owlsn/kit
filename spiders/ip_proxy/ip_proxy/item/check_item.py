@@ -10,13 +10,16 @@ class CheckItem(scrapy.Item):
     level = scrapy.Field()
     ip = scrapy.Field()
     port = scrapy.Field()
+    scheme = scrapy.Field()
 
     def get_update_sql(self):
         try:
             if self['delay'] != -1:
                 self['level'] = int(self['delay'] / 1000) + 1
-            update_sql = """ update ip set delay = %s,level = %s,update_time = %s where ip = %s and port = %s"""
-            params = (self['delay'], self['level'], time.time(), self['ip'], self['port'])
+            else:
+                self['level'] = 0
+            update_sql = """ update ip set delay = %s,level = %s,update_time = %s where ip = %s and port = %s and scheme = %s"""
+            params = (self['delay'], self['level'], time.time(), self['ip'], self['port'], self['scheme'])
             return update_sql, params
             pass
         except Exception as e:

@@ -7,7 +7,7 @@
 
 from scrapy import signals
 import random
-# from ip_proxy.utils.log import log
+import time
 
 class RandomUserAgentMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -38,6 +38,7 @@ class RandomUserAgentMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
+        print('random user agent start:{}'.format(time.time()))
         request.headers.setdefault('User-Agent', random.choice(self.agents))
         return None
 

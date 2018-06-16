@@ -29,10 +29,11 @@ class IpQueue(object):
             cursor.execute(sql)
             res = cursor.fetchall()
             for value in res:
-                if value[3] is not None:
-                    self.redis.rpush(self.getQueue(value[3]), value)
+                data = {'ip' : value[0], 'port' : value[1], 'scheme' : value[2], 'level' : value[3]}
+                if data['level'] is not None:
+                    self.redis.rpush(self.getQueue(data['level']), data)
                 else:
-                    self.redis.rpush(self.getQueue(0), value)
+                    self.redis.rpush(self.getQueue(0), data)
             pass
         except Exception as e:
             logger = log.getLogger('development')

@@ -10,9 +10,9 @@ from ip_proxy.utils.log import log
 from ip_proxy.connection.redis_connection import RedisConnection
 import socket
 import struct
-import json
 import time
 from ip_proxy.config import QUEUE_KEY
+from scrapy.exceptions import IgnoreRequest
 
 class IpProxyCheckBeginMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -32,22 +32,28 @@ class IpProxyCheckBeginMiddleware(object):
 
     def process_request(self, request, spider):
         level = request.meta.get('level')
-        print(str(level))
+        if level is None:
+            raise IgnoreRequest
         key = QUEUE_KEY + str(level)
-        proxy = self.conn.lpop(key)
-        if not proxy:
-            return None
-        logger = log.getLogger('debug')
-        logger.info('redis push:{}'.format(proxy))
-        ip = socket.inet_ntoa(struct.pack('I',socket.htonl(proxy['ip'])))
-        port = str(proxy['port'])
-        scheme = proxy['scheme']
-        logger.info('ip:{},port:{}'.format(ip, port))
-        request.meta['proxy'] = scheme + '://' + ip + ':' + port
-        request.meta['ip'] = ip
-        request.meta['port'] = port
-        request.meta['start'] = int(time.time() * 1000)
-        logger.info('start:{}'.format(int(time.time() * 1000)))
+        length = self.conn.llen(key)
+        if not length:
+            raise IgnoreRequest
+        byte = self.conn.lpop(key)
+        d_str = str(byte, encoding = "utf-8")  
+        data = eval(d_str)
+        if not data['ip'] or not data['port']:
+            raise IgnoreRequest
+        scheme = data['scheme'] if data['scheme'] is not None else 'http'
+        ip = socket.inet_ntoa(struct.pack('I',socket.htonl(int(data['ip']))))
+        port = data['port']
+        proxy = scheme + '://' + ip + ':' + str(port)
+        request.meta['proxy'] = proxy
+        request.meta['begin'] = time.time() * 1000
+        request.meta['proxy_ip'] = data['ip']
+        request.meta['proxy_port'] = data['port']
+        request.meta['proxy_scheme'] = data['scheme']
+        # logger = log.getLogger('development')
+        # logger.info('begin middleware start, request.meta:{},time:{}'.format(request.meta, time.time()))
         return None
 
     def spider_opened(self, spider):
@@ -66,11 +72,16 @@ class IpProxyCheckEndMiddleware(object):
         return s
 
     def process_response(self, request, response, spider):
-        delay = int(time.time() * 1000) - request.meta.get('start')
-        level = request.meta['level']
-        request.meta['delay'] = delay
-        request.meta['level'] = level
-        return response
+        if response.status == 200:
+            delay = time.time() * 1000 - int(request.meta['begin'])
+            request.meta['delay'] = delay
+            response.request_meta = request.meta
+            # logger = log.getLogger('development')
+            # logger.info('end middleware start, request.meta:{},response:{},time:{}'.format(request.meta, response.request_meta, time.time()))
+            return response
+        else:
+            raise IgnoreRequest
+            pass
 
     def spider_opened(self, spider):
         pass

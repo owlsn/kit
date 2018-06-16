@@ -33,7 +33,7 @@ class CheckPipeline(object):
         try:
             res = cursor.execute(update_sql, params)
             if res != 1:
-                raise Exception('insert error')
+                raise Exception('update error')
         except Exception as e:
             logger = log.getLogger('development')
             logger.error('sql:' + update_sql)

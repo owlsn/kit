@@ -37,6 +37,8 @@ class MysqlPipeline(object):
 
     def do_insert(self, cursor, item):
         insert_sql, params = item.get_insert_sql()
+        if insert_sql is None:
+            return
         try:
             res = cursor.execute(insert_sql, params)
             if res != 1:

@@ -12,7 +12,7 @@ class IpTools(object):
     def info(self,ip):
         if ip:
             url = 'http://ip.taobao.com//service/getIpInfo.php?ip=' + ip
-            r = requests.get(url, timeout = 5)
+            r = requests.get(url, timeout = 30)
             return r.json()
         else:
             return None
