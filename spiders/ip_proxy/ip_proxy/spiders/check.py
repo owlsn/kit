@@ -21,7 +21,7 @@ class CheckSpider(scrapy.Spider):
             length = self.conn.llen(QUEUE_KEY + str(i))
             if length:
                 self.level = i
-                self.request = scrapy.Request(self.base_url, meta={'level':i}, callback=self.parse,
+                self.request = scrapy.Request(self.base_url, meta={'level':i}, priority = (QUEUE_NUM - i), callback=self.parse,
                                     errback=self.errback_httpbin,
                                     dont_filter=True)
                 yield self.request

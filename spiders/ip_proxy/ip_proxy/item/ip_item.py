@@ -23,7 +23,7 @@ class IpItem(scrapy.Item):
     scheme = scrapy.Field()
 
     def get_insert_sql(self):
-        if not 'scheme' in self.keys() or self['scheme'] is None:
+        if not 'scheme' in self.keys() or self['scheme']:
             self['scheme'] = 'http'
         if 'ip' in self.keys() and self['ip'] and 'port' in self.keys() and self['port']:
             insert_sql = """insert into `ip` (`ip`, `port`, `create_time`, `scheme`, `delay`, `level`) values (%s, %s, %s, %s, %s, %s);"""

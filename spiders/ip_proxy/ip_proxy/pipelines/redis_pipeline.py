@@ -19,13 +19,18 @@ class RedisPipeline(object):
         pass
 
     def process_item(self, item, spider):
-        exist = self.conn.get(item['ip'])
+        if ('ip' not in item.keys() and not item['ip']) or ('port' not in item.keys() and not item['port']):
+            raise DropItem('ip or port is none')
+        if not 'scheme' in item.keys() or not item['scheme']:
+            item['scheme'] = 'http'
+        key = item['scheme'] + ':' + item['ip'] + ':' + item['port']
+        exist = self.conn.get(key)
         logger = log.getLogger('debug')
         if exist:
-            logger.debug('ip:' + item['ip'] + 'existed')
+            logger.debug('scheme:{},ip:{},port:{},is existed'.format(item['scheme'], item['ip'], item['port']))
             raise DropItem('ip:' + item['ip'] + 'existed')
         else:
-            logger.debug('ip:' + item['ip'] + 'is new')
-            self.conn.set(item['ip'], 1)
+            logger.debug('scheme:{},ip:{},port:{},is new'.format(item['scheme'], item['ip'], item['port']))
+            self.conn.set(key, 1)
             return item
 
