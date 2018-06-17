@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from ip_proxy.item.ip66_item import Ip66Item
+from ip_proxy.item.ip_item import IpItem
 from ip_proxy.connection.redis_connection import RedisConnection
 from ip_proxy.utils.log import log
 import time
@@ -30,7 +30,7 @@ class Ip66Spider(scrapy.Spider):
                         logger.debug('url:' + url + 'is new')
                         self.conn.set(url, 1)
                         yield self.make_requests_from_url(url)
-        item = Ip66Item()
+        item = IpItem()
         # 解析分页的url
         for a in response.xpath('//div[@id="PageList"]/a'):
             value = a.xpath('@href').extract()

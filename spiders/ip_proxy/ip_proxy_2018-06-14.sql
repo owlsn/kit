@@ -41,6 +41,7 @@ CREATE TABLE `ip` (
   `update_time` double unsigned DEFAULT NULL COMMENT '更新时间',
   `level` int(10) DEFAULT '0' COMMENT '检测优先级',
   `delay` int(11) DEFAULT '-1' COMMENT '延时',
+  `flag` tinyint(4) DEFAULT 0 COMMENT '是否查询ip地址信息',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Ip列表';
 

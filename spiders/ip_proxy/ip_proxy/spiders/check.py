@@ -52,14 +52,13 @@ class CheckSpider(scrapy.Spider):
         pass
 
     def parse(self, response):
-        print(response.body)
         item = CheckItem()
-        level = response.request_meta['level']
-        item['delay'] = response.request_meta['delay']
+        level = response.meta['level']
+        item['delay'] = response.meta['delay']
         item['level'] = level
-        item['ip'] = response.request_meta['proxy_ip']
-        item['port'] = response.request_meta['proxy_port']
-        item['scheme'] = response.request_meta['proxy_scheme']
+        item['ip'] = response.meta['proxy_ip']
+        item['port'] = response.meta['proxy_port']
+        item['scheme'] = response.meta['proxy_scheme']
         yield item
         length = self.conn.llen(QUEUE_KEY + str(level))
         if length:

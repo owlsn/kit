@@ -8,11 +8,14 @@
 from scrapy import signals
 from ip_proxy.utils.log import log
 from ip_proxy.connection.redis_connection import RedisConnection
+from ip_proxy.connection.mysql_connection import MysqlConnection
 import socket
 import struct
 import time
+import traceback
 from ip_proxy.config import QUEUE_KEY
 from scrapy.exceptions import IgnoreRequest
+from ip_proxy.utils.ip_tools import IpTools
 
 class IpProxyCheckBeginMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -21,6 +24,8 @@ class IpProxyCheckBeginMiddleware(object):
     def __init__(self):
         r = RedisConnection(db = 1)
         self.conn = r.conn
+        m = MysqlConnection()
+        self.dbpool = m.dbpool
         pass
 
     @classmethod
@@ -43,6 +48,12 @@ class IpProxyCheckBeginMiddleware(object):
         data = eval(d_str)
         if not data['ip'] or not data['port']:
             raise IgnoreRequest
+        # 获取ip地址信息
+        if not 'flag' in data.keys() or not data['flag']:
+            info = {'ip' : data['ip']}
+            res = self.dbpool.runInteraction(self.do_update, info)
+            res.addErrback(self.handle_error)
+
         scheme = data['scheme'] if data['scheme'] is not None else 'http'
         ip = socket.inet_ntoa(struct.pack('I',socket.htonl(int(data['ip']))))
         port = data['port']
@@ -55,6 +66,37 @@ class IpProxyCheckBeginMiddleware(object):
         # logger = log.getLogger('development')
         # logger.info('begin middleware start, request.meta:{},time:{}'.format(request.meta, time.time()))
         return None
+    
+    def do_update(self, cursor, info):
+        try:
+            if not 'ip' in info.keys() or info['ip'] is None:
+                return
+            else:
+                tool = IpTools()
+                ip = info['ip']
+                r = tool.info(socket.inet_ntoa(struct.pack('I',socket.htonl(int(ip)))))
+                if r != None and r['code'] == 0:
+                    data = r['data']
+                    isp = data['isp']
+                    country =data['country']
+                    city = data['city']
+                    region = data['region']
+                    area = data['area']
+                    update_sql =  """ update ip set isp = %s,country = %s,region = %s, city = %s, area = %s, flag = 1 where ip = %s;"""
+                    params = (isp, country, region, city, area, ip)
+                    cursor.execute(update_sql, params)
+                else:
+                    return
+            pass
+        except:
+            logger = log.getLogger('development')
+            logger.info(traceback.format_exc())
+            pass
+
+    def handle_error(self, failure):
+        logger = log.getLogger('development')
+        logger.info(str(failure))
+        pass
 
     def spider_opened(self, spider):
         pass
@@ -75,7 +117,6 @@ class IpProxyCheckEndMiddleware(object):
         if response.status == 200:
             delay = time.time() * 1000 - int(request.meta['begin'])
             request.meta['delay'] = delay
-            response.request_meta = request.meta
             # logger = log.getLogger('development')
             # logger.info('end middleware start, request.meta:{},response:{},time:{}'.format(request.meta, response.request_meta, time.time()))
             return response

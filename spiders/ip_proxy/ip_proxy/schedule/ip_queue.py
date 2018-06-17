@@ -24,12 +24,12 @@ class IpQueue(object):
 
     def do_select(self):
         try:
-            sql = """select ip, port, scheme, level from `ip` order by update_time asc"""
+            sql = """select ip, port, scheme, level, flag from `ip` order by update_time asc"""
             cursor = self.mysql.cursor()
             cursor.execute(sql)
             res = cursor.fetchall()
             for value in res:
-                data = {'ip' : value[0], 'port' : value[1], 'scheme' : value[2], 'level' : value[3]}
+                data = {'ip' : value[0], 'port' : value[1], 'scheme' : value[2], 'level' : value[3], 'flag':value[4]}
                 if data['level'] is not None:
                     self.redis.rpush(self.getQueue(data['level']), data)
                 else:
