@@ -20,32 +20,23 @@ class Ip89Spider(scrapy.Spider):
 
     def parse(self, response):
         logger = log.getLogger('development')
-        if response.url == self.base_url:
-            # 解析起始页面的头部标签的url
-            for li in response.xpath('//ul[@class="textlarge22"]/li'):
-                value = li.xpath('a/@href').extract()
-                if value and value[0].startswith('/', 0, 1):
-                    url = self.base_url + value[0]
-                    if not self.conn.get(url):
-                        logger.debug('url:' + url + 'is new')
-                        self.conn.set(url, 1)
-                        yield self.make_requests_from_url(url)
         item = IpItem()
         # 解析分页的url
-        for a in response.xpath('//div[@id="PageList"]/a'):
+        for a in response.xpath('//div[@id="layui-laypage-1"]/a'):
             value = a.xpath('@href').extract()
-            if value and value[0].startswith('/', 0, 1):
+            if value and value[0].startswith('index', 0, 5):
                 url = self.base_url + value[0]
                 if not self.conn.get(url):
-                    logger.debug('url:' + url + 'is new')
+                    logger.info('url:{}is new'.format(url))
                     self.conn.set(url, 1)
                     yield self.make_requests_from_url(url)
 
         # 解析表格,获取ip数据
-        for tr in response.xpath('//table[@width="100%"]/tr'):
+        for tr in response.xpath('//table[@class="layui-table"]/tbody/tr'):
             td = tr.xpath('td/text()').extract()
-            ip = td[0]
-            port = td[1]
+            ip = td[0].strip()
+            port = td[1].strip()
+            # print('ip:{},port:{}'.format(ip, port))
             if ip and ip != 'ip':
                 item['ip'] = ip
                 item['port'] = port
