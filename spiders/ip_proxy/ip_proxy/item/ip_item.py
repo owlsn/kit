@@ -21,13 +21,16 @@ class IpItem(scrapy.Item):
     city = scrapy.Field()
     area = scrapy.Field()
     scheme = scrapy.Field()
+    source = scrapy.Field()
 
     def get_insert_sql(self):
         if not 'scheme' in self.keys() or self['scheme']:
             self['scheme'] = 'http'
+        if not 'source' in self.keys() or self['source']:
+            self['source'] = 'unknown'
         if 'ip' in self.keys() and self['ip'] and 'port' in self.keys() and self['port']:
-            insert_sql = """insert into `ip` (`ip`, `port`, `create_time`, `scheme`, `delay`, `level`) values (%s, %s, %s, %s, %s, %s);"""
-            params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], time.time(), self['scheme'], -1, 0)
+            insert_sql = """insert into `ip` (`ip`, `port`, `create_time`, `scheme`, `delay`, `level`, `source`) values (%s, %s, %s, %s, %s, %s, %s);"""
+            params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], time.time(), self['scheme'], -1, 0, self['source'])
             return insert_sql, params
         else:
             return None
