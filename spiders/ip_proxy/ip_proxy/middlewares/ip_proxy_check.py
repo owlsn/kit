@@ -49,7 +49,7 @@ class IpProxyCheckBeginMiddleware(object):
         if not data['ip'] or not data['port']:
             raise IgnoreRequest
         # 获取ip地址信息
-        if not 'flag' in data.keys() or not data['flag']:
+        if 'flag' not in data.keys() or not data['flag']:
             info = {'ip' : data['ip']}
             res = self.dbpool.runInteraction(self.do_update, info)
             res.addErrback(self.handle_error)
@@ -69,7 +69,7 @@ class IpProxyCheckBeginMiddleware(object):
     
     def do_update(self, cursor, info):
         try:
-            if not 'ip' in info.keys() or info['ip'] is None:
+            if 'ip' not in info.keys() or not info['ip']:
                 return
             else:
                 tool = IpTools()
