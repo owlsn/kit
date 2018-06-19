@@ -14,7 +14,7 @@ import traceback
 
 if __name__ == '__main__':
     try:
-        r = RedisConnection(db = 2)
+        r = RedisConnection(db = 1)
         settings = get_project_settings()
         process = CrawlerProcess(settings)
         if URL_LIST:

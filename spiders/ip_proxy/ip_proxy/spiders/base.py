@@ -8,7 +8,7 @@ class BaseSpider(scrapy.Spider):
 
     def __init__(self):
         # redis连接,主要用于url判重
-        r = RedisConnection(db = 2)
+        r = RedisConnection(db = 1)
         self.conn = r.conn
         self.spider_set = SPIDER_SET if SPIDER_SET else 'spider_set'
         pass
