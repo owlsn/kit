@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from ip_proxy.item.ip_item import IpItem
-from ip_proxy.connection.redis_connection import RedisConnection
 from ip_proxy.utils.log import log
 import time
 import json
@@ -12,12 +11,6 @@ class Ip89Spider(BaseSpider):
     base_url = 'http://www.89ip.cn/'
     allowed_domains = ['www.89ip.cn']
     start_urls = ['http://www.89ip.cn/']
-
-    def __init__(self):
-        # redis连接,主要用于url判重
-        r = RedisConnection()
-        self.conn = r.conn
-        pass
 
     def parse(self, response):
         # logger = log.getLogger('development')

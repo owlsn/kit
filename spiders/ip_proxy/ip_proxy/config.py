@@ -92,3 +92,6 @@ LOG_CONFIG = {
 # ip队列配置
 QUEUE_NUM = 6
 QUEUE_KEY = 'ip_queue_'
+
+# spider 进程在redis中的set集合名
+SPIDER_SET = 'spider_set'

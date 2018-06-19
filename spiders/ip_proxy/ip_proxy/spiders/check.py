@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from ip_proxy.connection.redis_connection import RedisConnection
 from ip_proxy.utils.log import log
 from ip_proxy.item.check_item import CheckItem
 from scrapy.spidermiddlewares.httperror import HttpError
@@ -45,12 +44,6 @@ class CheckSpider(BaseSpider):
         'LOG_LEVEL' : 'INFO',
         'HTTPERROR_ALLOWED_CODES': range(200, 499)
     }
-
-    def __init__(self):
-        # redis连接,主要用于url判重
-        r = RedisConnection(db = 1)
-        self.conn = r.conn
-        pass
 
     def parse(self, response):
         item = CheckItem()
