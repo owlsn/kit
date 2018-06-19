@@ -5,8 +5,9 @@ from ip_proxy.connection.redis_connection import RedisConnection
 from ip_proxy.utils.log import log
 import time
 import json
+from ip_proxy.spiders.base import BaseSpider
 
-class Ip89Spider(scrapy.Spider):
+class Ip89Spider(BaseSpider):
     name = 'ip89'
     base_url = 'http://www.89ip.cn/'
     allowed_domains = ['www.89ip.cn']
