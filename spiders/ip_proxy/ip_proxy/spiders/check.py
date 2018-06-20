@@ -4,9 +4,7 @@ from ip_proxy.utils.log import log
 from ip_proxy.item.check_item import CheckItem
 from scrapy.spidermiddlewares.httperror import HttpError
 from ip_proxy.config import QUEUE_NUM
-from twisted.internet.error import DNSLookupError
-from twisted.internet.error import TimeoutError
-from twisted.internet.error import TCPTimedOutError
+from twisted.internet.error import DNSLookupError, TimeoutError, TCPTimedOutError
 import time
 from ip_proxy.config import QUEUE_KEY
 from ip_proxy.spiders.base import BaseSpider
