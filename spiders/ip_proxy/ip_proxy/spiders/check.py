@@ -3,7 +3,7 @@ import scrapy
 from ip_proxy.utils.log import log
 from ip_proxy.item.check_item import CheckItem
 from scrapy.spidermiddlewares.httperror import HttpError
-from ip_proxy.config import QUEUE_NUM
+from ip_proxy.config import QUEUE_NUM, CHECK_URL
 from twisted.internet.error import DNSLookupError, TimeoutError, TCPTimedOutError
 import time
 from ip_proxy.config import QUEUE_KEY
@@ -11,10 +11,12 @@ from ip_proxy.spiders.base import BaseSpider
 
 class CheckSpider(BaseSpider):
     name = 'check'
+    # 用于检验代理可用性的网站
     allowed_domains = ['www.66ip.cn']
     base_url = 'http://www.66ip.cn/'
 
     def start_requests(self):
+        # 对应level的url放入对应的队列，而url的leve是由delay确定
         for i in range(QUEUE_NUM):
             length = self.conn.llen(QUEUE_KEY + str(i))
             if length:

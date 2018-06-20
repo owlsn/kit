@@ -90,12 +90,12 @@ class IpProxyCheckBeginMiddleware(object):
             pass
         except:
             logger = log.getLogger('development')
-            logger.info(traceback.format_exc())
+            logger.error(traceback.format_exc())
             pass
 
     def handle_error(self, failure):
         logger = log.getLogger('development')
-        logger.info(str(failure))
+        logger.error(str(failure))
         pass
 
     def spider_opened(self, spider):

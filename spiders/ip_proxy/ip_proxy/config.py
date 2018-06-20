@@ -95,3 +95,6 @@ QUEUE_KEY = 'ip_queue_'
 
 # spider 进程在redis中的set集合名
 SPIDER_SET = 'spider_set'
+
+# check_url
+CHECK_URL = 'https://www.baidu.com'

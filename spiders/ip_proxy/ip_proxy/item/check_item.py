@@ -4,6 +4,7 @@ import scrapy
 import time
 from ip_proxy.utils.log import log
 import traceback
+from ip_proxy.config import QUEUE_NUM
 
 class CheckItem(scrapy.Item):
     delay = scrapy.Field()
@@ -16,6 +17,8 @@ class CheckItem(scrapy.Item):
         try:
             if self['delay'] != -1:
                 self['level'] = int(self['delay'] / 1000) + 1
+                if self['level'] > (QUEUE_NUM - 1):
+                    self['level'] = (QUEUE_NUM - 1)
             else:
                 self['level'] = 0
             update_sql = """ update ip set delay = %s,level = %s,update_time = %s where ip = %s and port = %s and scheme = %s"""
@@ -24,6 +27,6 @@ class CheckItem(scrapy.Item):
             pass
         except Exception as e:
             logger = log.getLogger('development')
-            logger.info(traceback.format_exc())
+            logger.error(traceback.format_exc())
             pass
             

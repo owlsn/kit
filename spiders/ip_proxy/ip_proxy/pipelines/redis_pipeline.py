@@ -27,10 +27,10 @@ class RedisPipeline(object):
         exist = self.conn.get(key)
         logger = log.getLogger('debug')
         if exist:
-            logger.debug('scheme:{},ip:{},port:{},is existed'.format(item['scheme'], item['ip'], item['port']))
+            # logger.debug('scheme:{},ip:{},port:{},is existed'.format(item['scheme'], item['ip'], item['port']))
             raise DropItem('ip:' + item['ip'] + 'existed')
         else:
-            logger.debug('scheme:{},ip:{},port:{},is new'.format(item['scheme'], item['ip'], item['port']))
+            # logger.debug('scheme:{},ip:{},port:{},is new'.format(item['scheme'], item['ip'], item['port']))
             self.conn.set(key, 1)
             return item
 
