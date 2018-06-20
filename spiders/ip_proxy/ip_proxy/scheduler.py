@@ -18,7 +18,7 @@ def job():
         logger.error(traceback.format_exc())
     pass
 
-schedule.every(12).hours.do(job)
+schedule.every(6).hours.do(job)
  
 while True:
     schedule.run_pending()
