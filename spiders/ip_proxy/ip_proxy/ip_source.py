@@ -12,6 +12,12 @@ URL_LIST = [
         'class' : 'Ip89Spider'
     },
     {
+        'name' : 'kuaidaili',
+        'module' : 'ip_proxy.spiders.kuaidaili',
+        'class' : 'KuaidailiSpider'
+    },
+    # ip代理检测
+    {
         'name' : 'check',
         'module' : 'ip_proxy.spiders.check',
         'class' : 'CheckSpider'
