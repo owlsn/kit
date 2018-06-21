@@ -9,6 +9,8 @@ import scrapy
 import time
 import socket
 import struct
+from ip_proxy.utils.log import log
+import traceback
 
 class IpItem(scrapy.Item):
     # define the fields for your item here like:
@@ -30,7 +32,14 @@ class IpItem(scrapy.Item):
             self['source'] = 'unknown'
         if 'ip' in self.keys() and self['ip'] and 'port' in self.keys() and self['port']:
             insert_sql = """insert into `ip` (`ip`, `port`, `create_time`, `scheme`, `delay`, `level`, `source`) values (%s, %s, %s, %s, %s, %s, %s);"""
-            params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], time.time(), self['scheme'], -1, 0, self['source'])
+            try:
+                params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], time.time(), self['scheme'], -1, 0, self['source'])
+                pass
+            except Exception as e:
+                logger = log.getLogger('development')
+                logger.error('ip is invalid:{}'.format(self['ip']))
+                logger.error(traceback.format_exc)
+                pass
             return insert_sql, params
         else:
             return None
