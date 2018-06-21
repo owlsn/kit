@@ -1,0 +1,20 @@
+%YAML 1.2
+---
+URL_LIST : 
+    -
+        name : "ip66"
+        module : "ip_proxy.spiders.ip66"
+        class : "Ip66Spider"
+    -
+        name : "ip89"
+        module : "ip_proxy.spiders.ip89"
+        class : "Ip89Spider"
+    -
+        name : "kuaidaili"
+        module : "ip_proxy.spiders.kuaidaili"
+        class : "KuaidailiSpider"
+    -
+        name : "check"
+        module : "ip_proxy.spiders.check"
+        class : "CheckSpider"
+

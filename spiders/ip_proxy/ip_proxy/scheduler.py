@@ -18,8 +18,11 @@ def job():
         logger.error(traceback.format_exc())
     pass
 
-schedule.every(6).hours.do(job)
+# schedule.every(6).hours.do(job)
  
-while True:
-    schedule.run_pending()
-    time.sleep(60 * 60)
+# while True:
+#     schedule.run_pending()
+#     time.sleep(60 * 60)
+
+if __name__ == '__main__':
+    job()
