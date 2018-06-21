@@ -29,8 +29,8 @@ def push_ip():
 
 sched = BlockingScheduler()
 logger = log.getLogger('development')
-sched.add_job(job, 'cron', hour='*/4', id='job')
-sched.add_job(push_ip, 'cron', hour='*/2', id='push_ip')
+sched.add_job(job, 'cron', hour='*/1', id='job')
+sched.add_job(push_ip, 'cron', hour='*/1', id='push_ip')
   
 logger.info('before the start funciton')
 sched.start()  
