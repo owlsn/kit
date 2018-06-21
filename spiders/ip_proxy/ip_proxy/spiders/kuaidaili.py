@@ -34,7 +34,7 @@ class KuaidailiSpider(BaseSpider):
             port = td[1]
             scheme = td[3]
             source = self.base_url
-            if ip and ip != 'ip':
+            if ip:
                 item['ip'] = ip
                 item['port'] = port
                 item['scheme'] = scheme.lower()

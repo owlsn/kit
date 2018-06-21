@@ -38,7 +38,7 @@ class RandomUserAgentMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        request.headers.setdefault('User-Agent', random.choice(self.agents))
+        request.headers['User-Agent'] =  random.choice(self.agents)
         return None
 
     def process_response(self, request, response, spider):

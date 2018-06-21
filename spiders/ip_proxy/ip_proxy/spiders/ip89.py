@@ -24,7 +24,7 @@ class Ip89Spider(BaseSpider):
                 ip = td[0].strip()
                 port = td[1].strip()
                 source = self.base_url
-                if ip and ip != 'ip':
+                if ip:
                     item['ip'] = ip
                     item['port'] = port
                     item['source'] = source
