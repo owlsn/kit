@@ -1,3 +1,4 @@
+APScheduler==3.5.1
 asn1crypto==0.24.0
 attrs==18.1.0
 Automat==0.6.0
@@ -18,16 +19,17 @@ pycparser==2.18
 PyDispatcher==2.0.5
 PyMySQL==0.8.1
 pyOpenSSL==18.0.0
+pytz==2018.4
 PyYAML==3.12
 queuelib==1.5.0
 redis==2.10.6
 requests==2.18.4
-schedule==0.5.0
 Scrapy==1.5.0
 service-identity==17.0.0
 six==1.11.0
 tornado==5.0.2
 Twisted==18.4.0
+tzlocal==1.5.1
 urllib3==1.22
 w3lib==1.19.0
 zope.interface==4.5.0
