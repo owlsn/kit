@@ -4,6 +4,7 @@ from ip_proxy.connection.mysql_connection import MysqlConnection
 from ip_proxy.config import QUEUE_NUM
 import traceback
 from ip_proxy.utils.log import log
+import time
 
 class IpQueue(object):
 
@@ -20,9 +21,14 @@ class IpQueue(object):
 
     def do_select(self):
         try:
+            logger = log.getLogger('development')
+            timeArray = time.localtime(time.time())
+            date_time = time.strftime("%Y--%m--%d %H:%M:%S", timeArray)
+            logger.info('ip_queue start at:{}'.format(date_time))
+            
             for i in range(QUEUE_NUM):
                 length = self.redis.llen(self.getQueue(i))
-                if not length:
+                if length < 10000:
                     sql = """select ip, port, scheme, level, flag from `ip` where level = %s order by update_time asc"""
                     params = (i)
                     cursor = self.mysql.cursor()

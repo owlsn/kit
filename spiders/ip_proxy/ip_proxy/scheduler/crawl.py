@@ -8,6 +8,7 @@ from ip_proxy.utils.log import log
 from ip_proxy.connection.redis_connection import RedisConnection
 import traceback
 import yaml
+import time
 
 class Crawl(object):
     
@@ -18,6 +19,11 @@ class Crawl(object):
     
     def start(self):
         try:
+            logger = log.getLogger('development')
+            timeArray = time.localtime(time.time())
+            date_time = time.strftime("%Y--%m--%d %H:%M:%S", timeArray)
+            logger.info('crawl start at:{}'.format(date_time))
+            
             settings = get_project_settings()
             process = CrawlerProcess(settings)
             source = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/ip_source.yaml'
