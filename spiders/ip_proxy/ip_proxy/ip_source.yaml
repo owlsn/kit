@@ -17,4 +17,8 @@ URL_LIST :
         name : "check"
         module : "ip_proxy.spiders.check"
         class : "CheckSpider"
+    -
+        name : "xici"
+        module : "ip_proxy.spiders.xici"
+        class : "XiciSpider"
 
