@@ -24,7 +24,7 @@ class KuaidailiSpider(BaseSpider):
             if value and value[0].startswith('/', 0, 1):
                 url = self.base_url + value[0]
                 if not self.conn.get(url):
-                    self.conn.set(url, 1, ex = 6 * 60 * 60)
+                    self.conn.set(url, 1, ex = 2 * 60 * 60)
                     yield self.make_requests_from_url(url)
 
         # 解析表格,获取ip数据
