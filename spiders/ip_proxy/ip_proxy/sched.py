@@ -1,5 +1,5 @@
 # coding = utf-8
-from apscheduler.schedulers.blocking  import BlockingScheduler
+# from apscheduler.schedulers.blocking  import BlockingScheduler
 import time
 import os
 import sys
@@ -27,11 +27,19 @@ def push_ip():
         logger.error(traceback.format_exc())
     pass
 
-sched = BlockingScheduler()
-logger = log.getLogger('development')
-sched.add_job(job, 'cron', hour='*/1', id='job')
-sched.add_job(push_ip, 'cron', hour='*/1', id='push_ip')
+if __name__ == '__main__':
+    argv = sys.argv
+    if len(argv) < 2:
+        exit()
+    if argv[1] == 'job':
+        job()
+    elif argv[1] == 'push_ip':
+        push_ip()
+# sched = BlockingScheduler()
+# logger = log.getLogger('development')
+# sched.add_job(job, 'cron', hour='*/1', id='job')
+# sched.add_job(push_ip, 'cron', hour='*/1', id='push_ip')
   
-logger.info('before the start funciton')
-sched.start()  
-logger.info("let us figure out the situation")
+# logger.info('before the start funciton')
+# sched.start()  
+# logger.info("let us figure out the situation")

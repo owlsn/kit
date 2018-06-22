@@ -1,1 +1,2 @@
-#!/usr/bin/env sh
+0 */4 * * * cd /home/ubuntu/workspace/kit/spiders/ip_proxy/ip_proxy && /home/ubuntu/workspace/kit/venv/bin/python3 sched.py job
+0 */2 * * * cd /home/ubuntu/workspace/kit/spiders/ip_proxy/ip_proxy && /home/ubuntu/workspace/kit/venv/bin/python3 sched.py push_ip
