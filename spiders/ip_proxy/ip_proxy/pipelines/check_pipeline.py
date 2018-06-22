@@ -31,9 +31,7 @@ class CheckPipeline(object):
     def do_update(self, cursor, item):
         update_sql, params = item.get_update_sql()
         try:
-            res = cursor.execute(update_sql, params)
-            if res == False:
-                raise Exception('update error')
+            cursor.execute(update_sql, params)
         except Exception as e:
             logger = log.getLogger('development')
             logger.error('sql:' + update_sql)

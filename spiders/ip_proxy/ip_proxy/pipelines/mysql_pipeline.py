@@ -41,7 +41,7 @@ class MysqlPipeline(object):
             return
         try:
             res = cursor.execute(insert_sql, params)
-            if res != 1:
+            if not res:
                 raise Exception('insert error')
         except Exception as e:
             logger = log.getLogger('development')
