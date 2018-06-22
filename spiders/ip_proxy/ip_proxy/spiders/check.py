@@ -6,7 +6,7 @@ from scrapy.spidermiddlewares.httperror import HttpError
 from ip_proxy.config import QUEUE_NUM, CHECK_URL
 from twisted.internet.error import DNSLookupError, TimeoutError, TCPTimedOutError
 import time
-from ip_proxy.config import QUEUE_KEY
+from ip_proxy.config import QUEUE_KEY, QUEUE_NUM
 from ip_proxy.spiders.base import BaseSpider
 
 class CheckSpider(BaseSpider):
@@ -54,12 +54,13 @@ class CheckSpider(BaseSpider):
         item['port'] = response.meta['proxy_port']
         item['scheme'] = response.meta['proxy_scheme']
         yield item
-        length = self.conn.llen(QUEUE_KEY + str(level))
-        if length:
-            self.request = scrapy.Request(self.base_url, meta={'level':level}, callback=self.parse,
+        for i in range(QUEUE_NUM):
+            length = self.conn.llen(QUEUE_KEY + str(i))
+            if length:
+                self.request = scrapy.Request(self.base_url, meta={'level':i}, priority = (QUEUE_NUM - i), callback=self.parse,
                                     errback=self.errback_httpbin,
                                     dont_filter=True)
-            yield self.request
+                yield self.request
         # logger = log.getLogger('development')
         # logger.info('parse result response:{},time:{}'.format(response, time.time()))
         pass
@@ -73,12 +74,13 @@ class CheckSpider(BaseSpider):
         item['port'] = self.request.meta['proxy_port']
         item['scheme'] = self.request.meta['proxy_scheme']
         yield item
-        length = self.conn.llen(QUEUE_KEY + str(level))
-        if length:
-            self.request = scrapy.Request(self.base_url, meta={'level':level}, callback=self.parse,
+        for i in range(QUEUE_NUM):
+            length = self.conn.llen(QUEUE_KEY + str(i))
+            if length:
+                self.request = scrapy.Request(self.base_url, meta={'level':i}, priority = (QUEUE_NUM - i), callback=self.parse,
                                     errback=self.errback_httpbin,
                                     dont_filter=True)
-            yield self.request
+                yield self.request
         # logger = log.getLogger('development')
         # logger.info('parse error:{},time:{},level:{},request.meta:{}'.format(failure, time.time(), self.level, self.request.meta))
         
