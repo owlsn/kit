@@ -9,7 +9,7 @@ from ip_proxy.spiders.base import BaseSpider
 class KuaidailiSpider(BaseSpider):
     name = 'kuaidaili'
     base_url = 'https://www.kuaidaili.com/'
-    allowed_domains = ['https://www.kuaidaili.com']
+    allowed_domains = ['www.kuaidaili.com']
     start_urls = [
         'https://www.kuaidaili.com/free/inha/',
         'https://www.kuaidaili.com/free/intr/'
