@@ -11,7 +11,7 @@ class IpTools(object):
     # return:None|json
     def info(self,ip):
         if ip:
-            url = 'http://ip.taobao.com//service/getIpInfo.php?ip=' + ip
+            url = 'http://ip.taobao.com/service/getIpInfo.php?ip=' + ip
             r = requests.get(url, timeout = 30)
             return r.json()
         else:
