@@ -17,8 +17,11 @@ REDIS = {
     'password' : '',
 }
 LOG_PATH =  ROOT + "/log/"
+IMAGE_PATH= ROOT + "/images/"
 if not os.path.exists(LOG_PATH):
     os.mkdir(LOG_PATH)
+if not os.path.exists(IMAGE_PATH):
+    os.mkdir(IMAGE_PATH)
 LOG_CONFIG = {
     "version":1,
     "disable_existing_loggers":False,
