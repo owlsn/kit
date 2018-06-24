@@ -29,13 +29,13 @@ class IpQueue(object):
             for i in range(QUEUE_NUM):
                 length = self.redis.llen(self.getQueue(i))
                 if length < 10000:
-                    sql = """select ip, port, scheme, level, flag from `ip` where level = %s order by update_time asc"""
+                    sql = """select ip, port, scheme, level, flag, times from `ip` where level = %s order by update_time asc"""
                     params = (i)
                     cursor = self.mysql.cursor()
                     cursor.execute(sql, params)
                     res = cursor.fetchall()
                     for value in res:
-                        data = {'ip' : value[0], 'port' : value[1], 'scheme' : value[2], 'level' : value[3], 'flag':value[4]}
+                        data = {'ip' : value[0], 'port' : value[1], 'scheme' : value[2], 'level' : value[3], 'flag':value[4], 'times' : value[5]}
                         if data['level'] is not None:
                             self.redis.rpush(self.getQueue(data['level']), data)
                         else:

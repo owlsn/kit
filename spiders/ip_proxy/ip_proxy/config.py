@@ -101,3 +101,6 @@ SPIDER_SET = 'spider_set'
 
 # check_url
 CHECK_URL = 'https://www.baidu.com/'
+
+# CHECK_TIMES
+CHECK_TIMES = 3

@@ -31,7 +31,7 @@ class IpItem(scrapy.Item):
         if 'source' not in self.keys() or not self['source']:
             self['source'] = 'unknown'
         if 'ip' in self.keys() and self['ip'] and 'port' in self.keys() and self['port']:
-            insert_sql = """insert into `ip` (`ip`, `port`, `create_time`, `scheme`, `delay`, `level`, `source`) values (%s, %s, %s, %s, %s, %s, %s);"""
+            insert_sql = """insert into `ip` (`ip`, `port`, `create_time`, `scheme`, `delay`, `level`, `source`, `times`) values (%s, %s, %s, %s, %s, %s, %s, 0);"""
             try:
                 params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], time.time(), self['scheme'], -1, 0, self['source'])
                 pass

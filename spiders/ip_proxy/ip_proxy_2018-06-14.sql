@@ -43,6 +43,7 @@ CREATE TABLE `ip` (
   `delay` int(11) DEFAULT '-1' COMMENT '延时',
   `flag` tinyint(4) DEFAULT 0 COMMENT '是否查询ip地址信息',
   `source` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ip来源',
+  `times` int(11) unsigned DEFAULT '0' COMMENT '失效次数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Ip列表';
 

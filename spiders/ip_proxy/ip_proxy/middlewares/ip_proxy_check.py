@@ -57,8 +57,10 @@ class IpProxyCheckBeginMiddleware(object):
         scheme = data['scheme'] if data['scheme'] is not None else 'http'
         ip = socket.inet_ntoa(struct.pack('I',socket.htonl(int(data['ip']))))
         port = data['port']
+        times = data['times'] if 'times' in data.keys() and data['times'] is not None else 0
         proxy = scheme + '://' + ip + ':' + str(port)
         request.meta['proxy'] = proxy
+        request.meta['times'] = times
         request.meta['begin'] = time.time() * 1000
         request.meta['proxy_ip'] = data['ip']
         request.meta['proxy_port'] = data['port']

@@ -47,6 +47,7 @@ class CheckSpider(BaseSpider):
     def parse(self, response):
         item = CheckItem()
         level = response.meta['level']
+        item['times'] = response.meta['times']
         item['delay'] = response.meta['delay']
         item['level'] = level
         item['ip'] = response.meta['proxy_ip']
@@ -68,6 +69,7 @@ class CheckSpider(BaseSpider):
         item = CheckItem()
         level = self.request.meta['level']
         item['delay'] = -1
+        item['times'] = self.request.meta['times']
         item['level'] = level
         item['ip'] = self.request.meta['proxy_ip']
         item['port'] = self.request.meta['proxy_port']
