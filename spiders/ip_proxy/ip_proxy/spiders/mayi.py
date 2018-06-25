@@ -10,8 +10,8 @@ import requests
 from io import BytesIO
 from ip_proxy.spiders.base import BaseSpider
 from ip_proxy.config import IMAGE_PATH
-from PIL import Image
-import pytesseract
+# from PIL import Image
+# import pytesseract
 
 class MayiSpider(BaseSpider):
     name = 'mayi'
