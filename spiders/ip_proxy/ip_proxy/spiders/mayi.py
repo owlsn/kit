@@ -7,11 +7,9 @@ import json
 import re
 import hashlib
 import requests
-from io import BytesIO
 from ip_proxy.spiders.base import BaseSpider
-from ip_proxy.config import IMAGE_PATH
-from PIL import Image
-import pytesseract
+from ip_proxy.utils.image import Img
+
 
 class MayiSpider(BaseSpider):
     name = 'mayi'
@@ -32,6 +30,7 @@ class MayiSpider(BaseSpider):
         if not proxy_token:
             return
         # 解析表格,获取ip数据
+        img = Img(cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe')
         tr_list = response.xpath('//tbody/tr')
         if len(tr_list):
             for tr in tr_list:
@@ -41,8 +40,6 @@ class MayiSpider(BaseSpider):
                 image_url = image[0].strip() if image else None
                 source = self.base_url
                 if image_url:
-                    logger.info('image:{}'.format(image_url))
-                    logger.info('token:{}'.format(proxy_token))
                     header = {
                         'User-Agent' :'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.1 Safari/605.1.15',
                         'Referer' : 'http://www.mayidaili.com/free',
@@ -51,7 +48,7 @@ class MayiSpider(BaseSpider):
                     }
                     res = requests.get(image_url, headers = header)
                     if res.status_code == 200:
-                        text=pytesseract.image_to_string(Image.open(BytesIO(res.content)))
+                        text = img.parse(res.content)
                         logger.info(text)
                 # if ip and image_url:
                 #     item['ip'] = ip
