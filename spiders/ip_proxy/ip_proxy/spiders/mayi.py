@@ -10,8 +10,9 @@ import requests
 from io import BytesIO
 from ip_proxy.spiders.base import BaseSpider
 from ip_proxy.config import IMAGE_PATH
-# from PIL import Image
-# import pytesseract
+from PIL import Image
+import pytesseract
+import tesseract
 
 class MayiSpider(BaseSpider):
     name = 'mayi'
@@ -28,7 +29,7 @@ class MayiSpider(BaseSpider):
         # logger.info(response.text)
         regex = r'proxy_token=[\s\S]{8}'
         l = re.findall(regex, response.text)
-        proxy_token = l[0][-8:-1] if l else None
+        proxy_token = l[0] if l else None
         if not proxy_token:
             return
         # 解析表格,获取ip数据
@@ -41,18 +42,18 @@ class MayiSpider(BaseSpider):
                 image_url = image[0].strip() if image else None
                 source = self.base_url
                 if image_url:
-                    print(image_url)
+                    logger.info('image:{}'.format(image_url))
+                    logger.info('token:{}'.format(proxy_token))
                     header = {
                         'User-Agent' :'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.1 Safari/605.1.15',
                         'Referer' : 'http://www.mayidaili.com/free',
-                        'Cookie': 'proxy_token=' + proxy_token,
+                        'Cookie': proxy_token,
                         'Accept': 'image/png,image/svg+xml,image/*;q=0.8,video/*;q=0.8,*/*;q=0.5'
                     }
                     res = requests.get(image_url, headers = header)
-                    logger.info('res.text:{}'.format(res.text))
-                    logger.info('res.content:{}'.format(res.content))
-                    # text=pytesseract.image_to_string(Image.open(res.content))
-                    # print(text)
+                    if res.status_code == 200:
+                        text=pytesseract.image_to_string(Image.open(BytesIO(res.content)))
+                        logger.info(text)
                 # if ip and image_url:
                 #     item['ip'] = ip
                 #     item['port'] = port
