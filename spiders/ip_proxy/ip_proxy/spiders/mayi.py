@@ -12,7 +12,6 @@ from ip_proxy.spiders.base import BaseSpider
 from ip_proxy.config import IMAGE_PATH
 from PIL import Image
 import pytesseract
-import tesseract
 
 class MayiSpider(BaseSpider):
     name = 'mayi'
