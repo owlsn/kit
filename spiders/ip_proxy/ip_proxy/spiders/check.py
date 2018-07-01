@@ -70,7 +70,7 @@ class CheckSpider(BaseSpider):
         level = self.request.meta['level']
         item['delay'] = -1
         item['times'] = self.request.meta['times']
-        item['level'] = level
+        item['level'] = 0
         item['ip'] = self.request.meta['proxy_ip']
         item['port'] = self.request.meta['proxy_port']
         item['scheme'] = self.request.meta['proxy_scheme']
