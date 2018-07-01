@@ -29,11 +29,12 @@ class CheckPipeline(object):
         pass
 
     def do_update(self, cursor, item):
+        logger = log.getLogger('development')
         update_sql, params = item.get_update_sql()
         try:
             cursor.execute(update_sql, params)
+            logger.info('update_sql:{},params:{}'.format(update_sql, params))
         except Exception as e:
-            logger = log.getLogger('development')
             logger.error('sql:' + update_sql)
             logger.error('params:' + json.dumps(params))
             logger.error(traceback.format_exc())
