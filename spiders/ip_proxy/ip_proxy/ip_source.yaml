@@ -7,6 +7,8 @@ URL_LIST :
         class : "Ip66Spider"
         type : "cron"
         id : "ip66"
+        coalesce : 1
+        max_instances : 3
     -
         name : "ip89"
         module : "ip_proxy.spiders.ip89"
