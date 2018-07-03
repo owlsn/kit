@@ -18,7 +18,7 @@ class Crawl(object):
         self.conn = r.conn
         pass
     
-    def start(self):
+    def start(self, sched):
         try:
             logger = log.getLogger('development')
             timeArray = time.localtime(time.time())
