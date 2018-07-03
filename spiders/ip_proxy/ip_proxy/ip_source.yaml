@@ -5,6 +5,9 @@ URL_LIST :
         name : "ip66"
         module : "ip_proxy.spiders.ip66"
         class : "Ip66Spider"
+        type : "cron"
+        id : "ip66"
+        name : 'ip66'
     -
         name : "ip89"
         module : "ip_proxy.spiders.ip89"
