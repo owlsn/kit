@@ -28,8 +28,8 @@ class Crawl(object):
                         ip_module = importlib.import_module(value['module'])
                         ip_module_cls = getattr(ip_module, value['class'])
                         cls_obj = ip_module_cls()
-                        sched.add_job(runner.crawl, value['type'], hour='*/1', id=value['id'],
-                        args=[cls_obj], max_instances = value['max_instances'], coalesce = value['coalesce'])
+                        sched.add_job(runner.crawl, value['type'], hour=value['time']['hour'], minute=value['time']['minute'], second=value['time']['second']
+                        id=value['id'],args=[cls_obj], max_instances = value['max_instances'], coalesce = value['coalesce'])
                     d = runner.join()
                     d.addBoth(lambda _: reactor.stop())
                     # reactor.run()

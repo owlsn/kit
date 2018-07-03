@@ -6,6 +6,10 @@ URL_LIST :
         module : "ip_proxy.spiders.ip66"
         class : "Ip66Spider"
         type : "cron"
+        time : 
+            hour : "*/1"
+            minute : 0
+            second : 0
         id : "ip66"
         coalesce : 1
         max_instances : 3
@@ -13,16 +17,48 @@ URL_LIST :
         name : "ip89"
         module : "ip_proxy.spiders.ip89"
         class : "Ip89Spider"
+        type : "cron"
+        time : 
+            hour : "*/1"
+            minute : 0
+            second : 0
+        id : "ip89"
+        coalesce : 1
+        max_instances : 3
     -
         name : "kuaidaili"
         module : "ip_proxy.spiders.kuaidaili"
         class : "KuaidailiSpider"
+        type : "cron"
+        time : 
+            hour : "*/1"
+            minute : 0
+            second : 0
+        id : "kuaidaili"
+        coalesce : 1
+        max_instances : 3
     -
         name : "check"
         module : "ip_proxy.spiders.check"
         class : "CheckSpider"
+        type : "cron"
+        time : 
+            hour : "*/1"
+            minute : 0
+            second : 0
+        id : "check"
+        coalesce : 1
+        max_instances : 3
     -
         name : "xici"
         module : "ip_proxy.spiders.xici"
         class : "XiciSpider"
+        type : "cron"
+        time : 
+            hour : "*/1"
+            minute : 0
+            second : 0
+        id : "xici"
+        coalesce : 1
+        max_instances : 3
 
