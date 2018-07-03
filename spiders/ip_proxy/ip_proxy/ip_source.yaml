@@ -7,9 +7,8 @@ URL_LIST :
         class : "Ip66Spider"
         type : "cron"
         time : 
-            hour : "*/1"
+            hour : '*/2'
             minute : 0
-            second : 0
         id : "ip66"
         coalesce : 1
         max_instances : 3
@@ -19,9 +18,8 @@ URL_LIST :
         class : "Ip89Spider"
         type : "cron"
         time : 
-            hour : "*/1"
+            hour : '*/2'
             minute : 0
-            second : 0
         id : "ip89"
         coalesce : 1
         max_instances : 3
@@ -31,9 +29,8 @@ URL_LIST :
         class : "KuaidailiSpider"
         type : "cron"
         time : 
-            hour : "*/1"
+            hour : '*/2'
             minute : 0
-            second : 0
         id : "kuaidaili"
         coalesce : 1
         max_instances : 3
@@ -43,9 +40,8 @@ URL_LIST :
         class : "CheckSpider"
         type : "cron"
         time : 
-            hour : "*/1"
+            hour : '*/1'
             minute : 0
-            second : 0
         id : "check"
         coalesce : 1
         max_instances : 3
@@ -55,9 +51,8 @@ URL_LIST :
         class : "XiciSpider"
         type : "cron"
         time : 
-            hour : "*/1"
+            hour : '*/2'
             minute : 0
-            second : 0
         id : "xici"
         coalesce : 1
         max_instances : 3

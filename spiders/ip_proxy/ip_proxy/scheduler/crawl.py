@@ -4,21 +4,14 @@ import importlib
 from twisted.internet import reactor
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
-from ip_proxy.config import SPIDER_SET
 from ip_proxy.utils.log import log
-from ip_proxy.connection.redis_connection import RedisConnection
 import traceback
 import yaml
 import time
 
 class Crawl(object):
     
-    def __init__(self):
-        r = RedisConnection(db = 1)
-        self.conn = r.conn
-        pass
-    
-    def start(self):
+    def start(self, sched):
         try:
             logger = log.getLogger('development')
             timeArray = time.localtime(time.time())
@@ -32,14 +25,14 @@ class Crawl(object):
                 data = yaml.load(f)
                 if 'URL_LIST' in data and data['URL_LIST']:
                     for value in data['URL_LIST']:
-                        if not self.conn.sismember(SPIDER_SET,value['class']):
-                            ip_module = importlib.import_module(value['module'])
-                            ip_module_cls = getattr(ip_module, value['class'])
-                            cls_obj = ip_module_cls()
-                            runner.crawl(cls_obj)
+                        ip_module = importlib.import_module(value['module'])
+                        ip_module_cls = getattr(ip_module, value['class'])
+                        cls_obj = ip_module_cls()
+                        sched.add_job(runner.crawl, value['type'], minute=value['time']['minute'], hour = value['time']['hour'],
+                        id=value['id'],args=[cls_obj], max_instances=value['max_instances'], coalesce=value['coalesce'])
                     d = runner.join()
                     d.addBoth(lambda _: reactor.stop())
-                    reactor.run()
+                    # reactor.run()
                     pass
                 else:
                     raise Exception('yaml file is empty')

@@ -1,2 +1,2 @@
-0 */4   * * *   root    cd /home/ubuntu/workspace/kit/spiders/ip_proxy/ip_proxy && /home/ubuntu/workspace/kit/venv/bin/python3 sched.py job > /home/ubuntu/workspace/kit/spiders/ip_proxy/log/crontab.log
-0 */2   * * *   root    cd /home/ubuntu/workspace/kit/spiders/ip_proxy/ip_proxy && /home/ubuntu/workspace/kit/venv/bin/python3 sched.py push_ip > /home/ubuntu/workspace/kit/spiders/ip_proxy/log/crontab.log
+# 0 */4   * * *   root    cd /home/ubuntu/workspace/kit/spiders/ip_proxy/ip_proxy && /home/ubuntu/workspace/kit/venv/bin/python3 sched.py job > /home/ubuntu/workspace/kit/spiders/ip_proxy/log/crontab.log
+# 0 */2   * * *   root    cd /home/ubuntu/workspace/kit/spiders/ip_proxy/ip_proxy && /home/ubuntu/workspace/kit/venv/bin/python3 sched.py push_ip > /home/ubuntu/workspace/kit/spiders/ip_proxy/log/crontab.log
