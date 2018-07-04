@@ -14,7 +14,7 @@ class BaseSpider(scrapy.Spider):
         # 保存当前执行中的spider名称，以便在定时任务中判断
         self.spider_set = SPIDER_SET if SPIDER_SET else 'spider_set'
         logger = log.getLogger('development')
-        logger.info("{} start".format(self))
+        logger.info("{} init".format(self))
         pass
 
     @classmethod
@@ -30,10 +30,14 @@ class BaseSpider(scrapy.Spider):
         # spider关闭去除集合中的对应标志数据
         cls_name = self.__class__.__name__
         self.conn.srem(self.spider_set, cls_name)
+        logger = log.getLogger('development')
+        logger.info("{} spider_closed".format(self))
         pass
 
     def spider_opened(self, spider):
         # spider开始在集合中加入对应标志数据
         cls_name = self.__class__.__name__
         self.conn.sadd(self.spider_set, cls_name)
+        logger = log.getLogger('development')
+        logger.info("{} spider_opened".format(self))
         pass
