@@ -14,7 +14,7 @@ class BaseSpider(scrapy.Spider):
         # 保存当前执行中的spider名称，以便在定时任务中判断
         self.spider_set = SPIDER_SET if SPIDER_SET else 'spider_set'
         logger = log.getLogger('development')
-        logger.info("{} init".format(self))
+        logger.info("{} init".format(self.__class__.__name__))
         pass
 
     @classmethod
