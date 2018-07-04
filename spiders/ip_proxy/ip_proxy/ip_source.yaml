@@ -10,7 +10,7 @@ URL_LIST :
             hour : '*/2'
             minute : 0
         id : "ip66"
-        coalesce : 1
+        coalesce : 0
         max_instances : 3
     -
         name : "ip89"
@@ -21,7 +21,7 @@ URL_LIST :
             hour : '*/2'
             minute : 0
         id : "ip89"
-        coalesce : 1
+        coalesce : 0
         max_instances : 3
     -
         name : "kuaidaili"
@@ -32,7 +32,7 @@ URL_LIST :
             hour : '*/2'
             minute : 0
         id : "kuaidaili"
-        coalesce : 1
+        coalesce : 0
         max_instances : 3
     -
         name : "check"
@@ -43,7 +43,7 @@ URL_LIST :
             hour : '*/1'
             minute : 0
         id : "check"
-        coalesce : 1
+        coalesce : 0
         max_instances : 3
     -
         name : "xici"
@@ -54,6 +54,6 @@ URL_LIST :
             hour : '*/2'
             minute : 0
         id : "xici"
-        coalesce : 1
+        coalesce : 0
         max_instances : 3
 
