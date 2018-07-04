@@ -6,7 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 # 将ip存入mysql数据库
-from ip_proxy.connection.mysql_connection import MysqlConnection
+from ip_proxy.connection.mysql_connection import mysqlAsyn
 import time
 import json
 from ip_proxy.utils.log import log
@@ -16,8 +16,7 @@ import copy
 class MysqlPipeline(object):
 
     def __init__(self):
-        conn = MysqlConnection()
-        self.dbpool = conn.dbpool
+        self.dbpool = mysqlAsyn.dbpool
         pass
 
 

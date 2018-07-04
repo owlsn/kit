@@ -6,7 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 # redis过滤重复ip
-from ip_proxy.connection.redis_connection import RedisConnection
+from ip_proxy.connection.redis_connection import redisDb0
 from scrapy.exceptions import DropItem
 import time
 from ip_proxy.utils.log import log
@@ -14,8 +14,7 @@ from ip_proxy.utils.log import log
 class RedisPipeline(object):
 
     def __init__(self):
-        r = RedisConnection()
-        self.conn = r.conn
+        self.conn = redisDb0.conn
         pass
 
     def process_item(self, item, spider):

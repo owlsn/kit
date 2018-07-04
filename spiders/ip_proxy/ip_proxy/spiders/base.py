@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy import signals
-from ip_proxy.connection.redis_connection import RedisConnection
+from ip_proxy.connection.redis_connection import redisDb1
 from ip_proxy.config import SPIDER_SET
 from ip_proxy.utils.log import log
 
@@ -9,8 +9,7 @@ class BaseSpider(scrapy.Spider):
 
     def __init__(self):
         # redis连接,主要用于url判重
-        r = RedisConnection(db = 1)
-        self.conn = r.conn
+        self.conn = redisDb1.conn
         # 保存当前执行中的spider名称，以便在定时任务中判断
         self.spider_set = SPIDER_SET if SPIDER_SET else 'spider_set'
         logger = log.getLogger('development')

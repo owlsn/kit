@@ -7,8 +7,8 @@
 
 from scrapy import signals
 from ip_proxy.utils.log import log
-from ip_proxy.connection.redis_connection import RedisConnection
-from ip_proxy.connection.mysql_connection import MysqlConnection
+from ip_proxy.connection.redis_connection import redisDb1
+from ip_proxy.connection.mysql_connection import mysqlAsyn
 import socket
 import struct
 import time
@@ -22,10 +22,8 @@ class IpProxyCheckBeginMiddleware(object):
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
     def __init__(self):
-        r = RedisConnection(db = 1)
-        self.conn = r.conn
-        m = MysqlConnection()
-        self.dbpool = m.dbpool
+        self.conn = redisDb1.conn
+        self.dbpool = mysqlAsyn.dbpool
         pass
 
     @classmethod

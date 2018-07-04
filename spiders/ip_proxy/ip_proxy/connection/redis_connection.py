@@ -24,5 +24,8 @@ class RedisConnection(object):
             logger = log.getLogger('development')
             logger.error(traceback.format_exc())
             pass
+
+redisDb1 = RedisConnection(db = 1)
+redisDb0 = RedisConnection()
             
 

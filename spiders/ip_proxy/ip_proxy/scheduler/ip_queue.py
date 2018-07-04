@@ -1,6 +1,6 @@
 # coding = utf-8
-from ip_proxy.connection.redis_connection import RedisConnection
-from ip_proxy.connection.mysql_connection import MysqlConnection
+from ip_proxy.connection.redis_connection import redisDb1
+from ip_proxy.connection.mysql_connection import mysqlSyn
 from ip_proxy.config import QUEUE_NUM
 import traceback
 from ip_proxy.utils.log import log
@@ -9,10 +9,8 @@ import time
 class IpQueue(object):
 
     def __init__(self):
-        r = RedisConnection(db = 1)
-        self.redis = r.conn
-        m = MysqlConnection(type = 'syn')
-        self.mysql = m.conn
+        self.redis = redisDb1.conn
+        self.mysql = mysqlSyn.conn
         pass
 
     def getQueue(self, level):

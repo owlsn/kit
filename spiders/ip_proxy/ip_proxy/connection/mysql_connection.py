@@ -36,3 +36,6 @@ class MysqlConnection(object):
             logger = log.getLogger('development')
             logger.error(traceback.format_exc)
             pass
+
+mysqlSyn = MysqlConnection(type = 'syn')
+mysqlAsyn = MysqlConnection()
