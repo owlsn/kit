@@ -18,7 +18,7 @@ class CheckItem(scrapy.Item):
         try:
             logger = log.getLogger('development')
             if self['delay'] != -1:
-                self['level'] = int(self['delay'] / 1000) + 1
+                self['level'] = int(self['delay'] / 10000) + 1
                 if self['level'] > (QUEUE_NUM - 1):
                     self['level'] = (QUEUE_NUM - 1)
                 update_sql = """ update ip set delay = %s,level = %s,update_time = %s, times = 0 where ip = %s and port = %s and scheme = %s"""
