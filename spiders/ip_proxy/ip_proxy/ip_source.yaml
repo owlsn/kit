@@ -56,4 +56,15 @@ URL_LIST :
         id : "xici"
         coalesce : 0
         max_instances : 3
+    -
+        name : "data5u"
+        module : "ip_proxy.spiders.data5u"
+        class : "Data5uSpider"
+        type : "cron"
+        time : 
+            hour : '*'
+            minute : '*/1'
+        id : "data5u"
+        coalesce : 0
+        max_instances : 3
 
