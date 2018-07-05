@@ -16,7 +16,6 @@ class Img(object):
     def parse(self, content):
         image = self.rmline(BytesIO(content))
         text = self.pytsract.image_to_string(image)
-        image.save('./test.' + text + str(random.randint(0,99999)) +'.png')
         return text
         # image = Image.open(BytesIO(content))
         # img = image.convert('L')
