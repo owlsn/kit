@@ -8,7 +8,7 @@ import re
 import hashlib
 import requests
 from ip_proxy.spiders.base import BaseSpider
-from ip_proxy.utils.image import Img
+from ip_proxy.utils.image import img, Img
 
 
 class MayiSpider(BaseSpider):
@@ -30,7 +30,7 @@ class MayiSpider(BaseSpider):
         if not proxy_token:
             return
         # 解析表格,获取ip数据
-        img = Img(cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe')
+        # img = Img(cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe')
         tr_list = response.xpath('//tbody/tr')
         if len(tr_list):
             for tr in tr_list:
@@ -61,9 +61,8 @@ class MayiSpider(BaseSpider):
                 value = a.xpath('@href').extract()
                 if value and value[0].startswith('http', 0, 4):
                     url = value[0]
-                    print(url)
-                    # if not self.conn.get(url):
-                    #     self.conn.set(url, 1, ex = 2 * 60 * 60)
-                    #     yield self.make_requests_from_url(url)
+                    if not self.conn.get(url):
+                        self.conn.set(url, 1, ex = 2 * 60 * 60)
+                        yield self.make_requests_from_url(url)
 
         pass
