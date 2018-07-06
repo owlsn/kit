@@ -6,6 +6,14 @@ from io import BytesIO
 import random
 
 class Img(object):
+    
+    replace = {
+        'o' : 0,
+        'O' : 0,
+        'a' : 8,
+        's' : 8,
+        'e' : 0
+    }
 
     def __init__(self, cmd = None):
         self.pytsract = pytesseract
@@ -56,7 +64,6 @@ class Img(object):
                     pixdata[x,y] = 255
         return img
 
-    # 去除干扰线
     def rmline(self, content):
         image = Image.open(content)
         image_array = image.load()
@@ -66,37 +73,6 @@ class Img(object):
                 if image_array[i, j] != (0, 0, 0, 255):
                     image_array[i, j] = (0, 0, 0, 0)
         return image
-
-    # 边界检测
-    def check_col(image_array_a, col, y_num):
-        this_col = False
-        for jj in range(y_num):
-            if image_array_a[col, jj] != (0, 0, 0, 0):
-                this_col = True
-        return this_col
-
-    # 字符位置检测
-    def position(self, image_array):
-        crop_position_array = []
-        start_flag = False
-        start_ci = 0
-        for ci in range(x):
-            check_col_result = check_col(image_array, ci, y)
-            print(check_col_result, ci)
-            if start_flag and not check_col_result:
-                crop_item = (start_ci, 0, ci, 9)
-                crop_position_array.append(crop_item)
-                start_flag = False
-                start_ci = 0
-            if not start_flag and check_col_result:
-                start_flag = True
-                start_ci = ci
-        # 切割所有字符
-        index = 0
-        for cro_i in crop_position_array:
-            print(cro_i)
-            image.crop(cro_i).save('./code/' + str(index) + '.png')
-            index += 1
 
 img = Img()
 
