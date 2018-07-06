@@ -11,7 +11,7 @@
 import time
 import os
 BOT_NAME = 'ip_proxy'
-
+ROOT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SPIDER_MODULES = ['ip_proxy.spiders']
 NEWSPIDER_MODULE = 'ip_proxy.spiders'
 
