@@ -67,15 +67,15 @@ URL_LIST :
         id : "data5u"
         coalesce : 0
         max_instances : 3
-    -
-        name : "mayi"
-        module : "ip_proxy.spiders.mayi"
-        class : "MayiSpider"
-        type : "cron"
-        time : 
-            hour : '*/2'
-            minute : 0
-        id : "mayi"
-        coalesce : 0
-        max_instances : 3
+#    -
+#        name : "mayi"
+#        module : "ip_proxy.spiders.mayi"
+#        class : "MayiSpider"
+#        type : "cron"
+#        time : 
+#            hour : '*/2'
+#            minute : 0
+#        id : "mayi"
+#        coalesce : 0
+#        max_instances : 3
 
