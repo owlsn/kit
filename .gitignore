@@ -5,3 +5,5 @@ venv
 dump.rdb
 **/log
 .idea
+.profile
+redis-stat-daemon.pid
