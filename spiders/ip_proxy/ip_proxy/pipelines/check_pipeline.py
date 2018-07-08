@@ -1,6 +1,6 @@
 # coding = utf-8
 
-from ip_proxy.connection.mysql_connection import mysqlAsyn
+from ip_proxy.connection.mysql_connection import MysqlConnection
 import time
 import json
 from ip_proxy.utils.log import log
@@ -10,7 +10,7 @@ import copy
 class CheckPipeline(object):
 
     def __init__(self):
-        self.dbpool = mysqlAsyn.dbpool
+        self.dbpool = MysqlConnection().dbpool
         pass
 
     def process_item(self, item, spider):
