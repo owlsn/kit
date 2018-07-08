@@ -38,3 +38,4 @@ class MysqlConnection(object):
             pass
 
 mysqlSyn = MysqlConnection(type = 'syn')
+mysqlAsyn = MysqlConnection()
