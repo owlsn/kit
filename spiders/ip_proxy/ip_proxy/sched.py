@@ -24,9 +24,6 @@ logger = log.getLogger('development')
 crawler.start(sched)
 sched.add_job(push_ip, 'cron', hour='*/1', id='push_ip')
 sched.start()
-print('sched start')
-try:
-    reactor.run()
-except (KeyboardInterrupt, SystemExit):
-    pass
-print('sched end')
+logger.info('sched start')
+reactor.run()
+logger.info('sched end')
