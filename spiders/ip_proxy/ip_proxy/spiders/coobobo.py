@@ -37,7 +37,7 @@ class CooboboSpider(BaseSpider):
                         res = requests.get(image_url, headers = header)
                         if res.status_code == 200:
                             text = self.parse_port(BytesIO(res.content))
-                            print(text)
+                            return
                             # port = text if text else None
 
             for a in response.xpath('//ul[@class="pagination"]/li/a'):
@@ -53,10 +53,13 @@ class CooboboSpider(BaseSpider):
 
     def parse_port(self, content):
         # 去干扰线
-        image = Image.open(content).crop((0, 6, 80, 15))
-
-        image_array = image.load()
+        image = Image.open(content)
+        r, c = image.size
+        image = image.crop((1, 3, (r - 1), (c - 4)))
         x, y = image.size
+        image_array = image.load()
+        # image.save('test.gif')
+
         # 字符位置检测
         crop_position_array = []
         start_flag = False

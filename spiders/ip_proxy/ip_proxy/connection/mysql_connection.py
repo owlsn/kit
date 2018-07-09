@@ -9,33 +9,40 @@ import traceback
 # twisted adbapi连接
 class MysqlConnection(object):
 
-    def __init__(self, type = 'asyn', host = None, db = None, user = None, passwd = None, charset = None, port = None):
+    def __init__(self, *args, **kwargs):
         try:
             self.config = MYSQL
-            if type == 'syn':
-                self.conn = pymysql.connect(
-                    host = host if host else self.config['host'],
-                    db = db if db else self.config['database'],
-                    user = user if user else self.config['user'],
-                    passwd = passwd if passwd else self.config['password'],
-                    charset = charset if charset else self.config['charset'],
-                    port = port if port else self.config['port']
-                )
-            else:
-                dbparams = dict(
-                    host = host if host else self.config['host'],
-                    db = db if db else self.config['database'],
-                    user = user if user else self.config['user'],
-                    passwd = passwd if passwd else self.config['password'],
-                    charset = charset if charset else self.config['charset'],
-                    cursorclass = pymysql.cursors.DictCursor
-                )
-                self.dbpool = adbapi.ConnectionPool('pymysql', **dbparams)
+            keys = kwargs.keys()
+            self.type = 'syn' if 'type' in keys and kwargs['type'] == 'syn' else 'asyn'
+            self.connect(kwargs)
             pass
         except Exception as e:
             logger = log.getLogger('development')
-            logger.error(traceback.format_exc)
+            logger.error(traceback.format_exc())
             pass
+
+    def connect(self, *args, **kwargs):
+        keys = kwargs.keys()
+        if self.type == 'syn':
+            self.conn = pymysql.connect(
+                host = kwargs['host'] if 'host' in keys and  kwargs['host'] else self.config['host'],
+                db = kwargs['db'] if 'db' in keys and kwargs['db'] else self.config['database'],
+                user = kwargs['user'] if 'user' in keys and kwargs['user'] else self.config['user'],
+                passwd = kwargs['passwd'] if 'passwd' in keys and kwargs['passwd'] else self.config['password'],
+                charset = kwargs['charset'] if 'charset' in keys and kwargs['charset'] else self.config['charset'],
+                port = kwargs['port'] if 'port' in keys and kwargs['port'] else self.config['port']
+            )
+        else:
+            dbparams = dict(
+                host = kwargs['host'] if 'host' in keys and kwargs['host'] else self.config['host'],
+                db = kwargs['db'] if 'db' in keys and kwargs['db'] else self.config['database'],
+                user = kwargs['user'] if 'user' in keys and kwargs['user'] else self.config['user'],
+                passwd = kwargs['passwd'] if 'passwd' in keys and kwargs['passwd'] else self.config['password'],
+                charset = kwargs['charset'] if 'charset' in keys and kwargs['charset'] else self.config['charset'],
+                cursorclass = pymysql.cursors.DictCursor
+            )
+            self.conn = adbapi.ConnectionPool('pymysql', **dbparams)
+        pass
 
 mysqlSyn = MysqlConnection(type = 'syn')
 mysqlAsyn = MysqlConnection()
