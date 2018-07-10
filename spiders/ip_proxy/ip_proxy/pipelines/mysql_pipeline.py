@@ -16,7 +16,7 @@ import copy
 class MysqlPipeline(object):
 
     def __init__(self):
-        self.conn = mysqlAsyn.conn
+        self.dbpool = mysqlAsyn.dbpool
         pass
 
 
@@ -25,7 +25,7 @@ class MysqlPipeline(object):
         # logger = log.getLogger('debug')
         # logger.debug(json.dumps(item))
         asyncItem = copy.deepcopy(item)
-        res = self.conn.runInteraction(self.do_insert, asyncItem)
+        res = self.dbpool.runInteraction(self.do_insert, asyncItem)
         res.addErrback(self.handle_error, asyncItem, spider)
         return item
 

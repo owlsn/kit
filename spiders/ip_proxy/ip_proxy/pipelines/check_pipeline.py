@@ -10,7 +10,7 @@ import copy
 class CheckPipeline(object):
 
     def __init__(self):
-        self.conn = mysqlAsyn.conn
+        self.dbpool = mysqlAsyn.dbpool
         pass
 
     def process_item(self, item, spider):
@@ -18,7 +18,7 @@ class CheckPipeline(object):
         # logger = log.getLogger('debug')
         # logger.debug(json.dumps(item))
         asyncItem = copy.deepcopy(item)
-        res = self.conn.runInteraction(self.do_update, asyncItem)
+        res = self.dbpool.runInteraction(self.do_update, asyncItem)
         res.addErrback(self.handle_error, asyncItem, spider)
         return item
 

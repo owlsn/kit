@@ -23,7 +23,7 @@ class IpProxyCheckBeginMiddleware(object):
     # passed objects.
     def __init__(self):
         self.conn = redisDb1.conn
-        self.conn = mysqlAsyn.conn
+        self.dbpool = mysqlAsyn.dbpool
         pass
 
     @classmethod
@@ -49,7 +49,7 @@ class IpProxyCheckBeginMiddleware(object):
         # 获取ip地址信息
         if 'flag' not in data.keys() or not data['flag']:
             info = {'ip' : data['ip']}
-            res = self.conn.runInteraction(self.do_update, info)
+            res = self.dbpool.runInteraction(self.do_update, info)
             res.addErrback(self.handle_error)
 
         scheme = data['scheme'] if data['scheme'] is not None else 'http'

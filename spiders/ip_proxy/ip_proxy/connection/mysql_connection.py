@@ -41,7 +41,7 @@ class MysqlConnection(object):
                 charset = kwargs['charset'] if 'charset' in keys and kwargs['charset'] else self.config['charset'],
                 cursorclass = pymysql.cursors.DictCursor
             )
-            self.conn = adbapi.ConnectionPool('pymysql', **dbparams)
+            self.dbpool = adbapi.ConnectionPool('pymysql', **dbparams)
         pass
 
 mysqlSyn = MysqlConnection(type = 'syn')
