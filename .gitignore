@@ -7,3 +7,4 @@ dump.rdb
 .idea
 .profile
 redis-stat-daemon.pid
+**/.DS_Store
