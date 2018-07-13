@@ -22,7 +22,7 @@ def push_ip():
 sched = TwistedScheduler()
 logger = log.getLogger('development')
 crawler.start(sched)
-sched.add_job(push_ip, 'cron', hour='*/1', id='push_ip')
+sched.add_job(push_ip, 'cron', hour='*/2', id='push_ip')
 sched.start()
 logger.info('sched start')
 reactor.run()

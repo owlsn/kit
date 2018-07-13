@@ -4,6 +4,7 @@ from scrapy import signals
 from ip_proxy.connection.redis_connection import redisDb1
 from ip_proxy.config import SPIDER_SET
 from ip_proxy.utils.log import log
+from ip_proxy.connection.mysql_connection import mysql
 
 class BaseSpider(scrapy.Spider):
 
@@ -29,6 +30,7 @@ class BaseSpider(scrapy.Spider):
         # spider关闭去除集合中的对应标志数据
         cls_name = self.__class__.__name__
         self.conn.srem(self.spider_set, cls_name)
+        mysql.close()
         logger = log.getLogger('development')
         logger.info("{} spider_closed".format(self))
         pass

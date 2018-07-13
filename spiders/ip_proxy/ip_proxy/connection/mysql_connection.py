@@ -9,17 +9,18 @@ import traceback
 # twisted adbapi连接
 class MysqlConnection(object):
 
-    def __init__(self, *args, **kwargs):
-        try:
-            self.config = MYSQL
-            keys = kwargs.keys()
-            self.type = 'syn' if 'type' in keys and kwargs['type'] == 'syn' else 'asyn'
-            self.connect(kwargs)
-            pass
-        except Exception as e:
+    def __init__(self):
+        self.config = MYSQL
+
+    def get_instance(self, *args, **kwargs):
+        keys = kwargs.keys()
+        self.type = 'syn' if 'type' in keys and kwargs['type'] == 'syn' else 'asyn'
+        if not hasattr(self, 'conn') or not self.conn:
             logger = log.getLogger('development')
-            logger.error(traceback.format_exc())
-            pass
+            logger.info('connect')
+            self.connect(kwargs)
+        return self
+        pass
 
     def connect(self, *args, **kwargs):
         keys = kwargs.keys()
@@ -41,8 +42,14 @@ class MysqlConnection(object):
                 charset = kwargs['charset'] if 'charset' in keys and kwargs['charset'] else self.config['charset'],
                 cursorclass = pymysql.cursors.DictCursor
             )
-            self.dbpool = adbapi.ConnectionPool('pymysql', **dbparams)
+            self.conn = adbapi.ConnectionPool('pymysql', **dbparams)
         pass
 
-mysqlSyn = MysqlConnection(type = 'syn')
-mysqlAsyn = MysqlConnection()
+    def close(self):
+        logger = log.getLogger('development')
+        logger.info('close')
+        self.conn.close()
+        self.conn = None
+        pass
+
+mysql = MysqlConnection()

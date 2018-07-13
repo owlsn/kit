@@ -1,6 +1,6 @@
 # coding = utf-8
 
-from ip_proxy.connection.mysql_connection import mysqlAsyn
+from ip_proxy.connection.mysql_connection import mysql
 import time
 import json
 from ip_proxy.utils.log import log
@@ -10,7 +10,7 @@ import copy
 class CheckPipeline(object):
 
     def __init__(self):
-        self.dbpool = mysqlAsyn.dbpool
+        self.conn = mysql.get_instance().conn
         pass
 
     def process_item(self, item, spider):
@@ -18,7 +18,7 @@ class CheckPipeline(object):
         # logger = log.getLogger('debug')
         # logger.debug(json.dumps(item))
         asyncItem = copy.deepcopy(item)
-        res = self.dbpool.runInteraction(self.do_update, asyncItem)
+        res = self.conn.runInteraction(self.do_update, asyncItem)
         res.addErrback(self.handle_error, asyncItem, spider)
         return item
 
@@ -37,5 +37,5 @@ class CheckPipeline(object):
             logger.error('sql:' + update_sql)
             logger.error('params:' + json.dumps(params))
             logger.error(traceback.format_exc())
-            mysqlAsyn.connect()
+            mysql.close()
             pass

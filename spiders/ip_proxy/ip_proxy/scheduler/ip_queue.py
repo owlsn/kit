@@ -1,6 +1,6 @@
 # coding = utf-8
 from ip_proxy.connection.redis_connection import redisDb1
-from ip_proxy.connection.mysql_connection import mysqlSyn
+from ip_proxy.connection.mysql_connection import mysql
 from ip_proxy.config import QUEUE_NUM
 import traceback
 from ip_proxy.utils.log import log
@@ -10,7 +10,7 @@ class IpQueue(object):
 
     def __init__(self):
         self.redis = redisDb1.conn
-        self.mysql = mysqlSyn.conn
+        self.mysql = mysql.get_instance(type = 'syn').conn
         pass
 
     def getQueue(self, level):
@@ -49,7 +49,7 @@ class IpQueue(object):
         except Exception as e:
             logger = log.getLogger('development')
             logger.error(traceback.format_exc())
-            mysqlSyn.connect()
+            mysql.close()
             pass
 
 ip_queue = IpQueue()

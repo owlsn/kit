@@ -58,7 +58,7 @@ class CooboboSpider(BaseSpider):
         image = image.crop((1, 3, (r - 1), (c - 4)))
         x, y = image.size
         image_array = image.load()
-        # image.save('test.gif')
+        # print('x.{},y.{}'.format(x, y))
 
         # 字符位置检测
         crop_position_array = []

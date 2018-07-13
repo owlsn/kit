@@ -6,7 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 # 将ip存入mysql数据库
-from ip_proxy.connection.mysql_connection import mysqlAsyn
+from ip_proxy.connection.mysql_connection import mysql
 import time
 import json
 from ip_proxy.utils.log import log
@@ -16,7 +16,7 @@ import copy
 class MysqlPipeline(object):
 
     def __init__(self):
-        self.dbpool = mysqlAsyn.dbpool
+        self.conn = mysql.get_instance().conn
         pass
 
 
@@ -25,7 +25,7 @@ class MysqlPipeline(object):
         # logger = log.getLogger('debug')
         # logger.debug(json.dumps(item))
         asyncItem = copy.deepcopy(item)
-        res = self.dbpool.runInteraction(self.do_insert, asyncItem)
+        res = self.conn.runInteraction(self.do_insert, asyncItem)
         res.addErrback(self.handle_error, asyncItem, spider)
         return item
 
@@ -47,6 +47,6 @@ class MysqlPipeline(object):
             logger.error('sql:' + insert_sql)
             logger.error('params:' + json.dumps(params))
             logger.error(traceback.format_exc())
-            mysqlAsyn.connect()
+            mysql.close()
             pass
         

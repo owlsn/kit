@@ -8,7 +8,7 @@
 from scrapy import signals
 from ip_proxy.utils.log import log
 from ip_proxy.connection.redis_connection import redisDb1
-from ip_proxy.connection.mysql_connection import mysqlAsyn
+from ip_proxy.connection.mysql_connection import mysql
 import socket
 import struct
 import time
@@ -23,7 +23,7 @@ class IpProxyCheckBeginMiddleware(object):
     # passed objects.
     def __init__(self):
         self.conn = redisDb1.conn
-        self.dbpool = mysqlAsyn.dbpool
+        self.mysql = mysql.get_instance().conn
         pass
 
     @classmethod
@@ -49,7 +49,7 @@ class IpProxyCheckBeginMiddleware(object):
         # 获取ip地址信息
         if 'flag' not in data.keys() or not data['flag']:
             info = {'ip' : data['ip']}
-            res = self.dbpool.runInteraction(self.do_update, info)
+            res = self.mysql.runInteraction(self.do_update, info)
             res.addErrback(self.handle_error)
 
         scheme = data['scheme'] if data['scheme'] is not None else 'http'
@@ -91,7 +91,7 @@ class IpProxyCheckBeginMiddleware(object):
         except:
             logger = log.getLogger('development')
             logger.error(traceback.format_exc())
-            mysqlAsyn.connect()
+            mysql.close()
             pass
 
     def handle_error(self, failure):
