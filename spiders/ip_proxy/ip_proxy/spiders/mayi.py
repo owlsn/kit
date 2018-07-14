@@ -66,7 +66,6 @@ class MayiSpider(BaseSpider):
     def parse_port(self, content):
         # 去干扰线
         image = Image.open(content).crop((0, 6, 80, 15))
-
         image_array = image.load()
         x, y = image.size
         for i in range(x):

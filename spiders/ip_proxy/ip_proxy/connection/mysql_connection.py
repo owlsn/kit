@@ -48,8 +48,9 @@ class MysqlConnection(object):
     def close(self):
         logger = log.getLogger('development')
         logger.info('close')
-        self.conn.close()
-        self.conn = None
+        if self.conn:
+            self.conn.close()
+            self.conn = None
         pass
 
 mysql = MysqlConnection()
