@@ -6,7 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 from ip_proxy.connection.redis_connection import redisDb1
 from ip_proxy.connection.mysql_connection import mysql
 import socket
@@ -63,7 +63,7 @@ class IpProxyCheckBeginMiddleware(object):
         request.meta['proxy_ip'] = data['ip']
         request.meta['proxy_port'] = data['port']
         request.meta['proxy_scheme'] = data['scheme']
-        # logger = log.getLogger('development')
+        # logger = Log().getLogger('development')
         # logger.info('begin middleware start, request.meta:{},time:{}'.format(request.meta, time.time()))
         return None
     
@@ -89,13 +89,13 @@ class IpProxyCheckBeginMiddleware(object):
                     return
             pass
         except:
-            logger = log.getLogger('development')
+            logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
             mysql.close()
             pass
 
     def handle_error(self, failure):
-        logger = log.getLogger('development')
+        logger = Log().getLogger('development')
         logger.error(str(failure))
         pass
 
@@ -118,7 +118,7 @@ class IpProxyCheckEndMiddleware(object):
         if response.status == 200:
             delay = time.time() * 1000 - int(request.meta['begin'])
             request.meta['delay'] = delay
-            # logger = log.getLogger('development')
+            # logger = Log().getLogger('development')
             # logger.info('end middleware start, request.meta:{},response:{},time:{}'.format(request.meta, response.request_meta, time.time()))
             return response
         else:

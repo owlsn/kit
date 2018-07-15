@@ -1,7 +1,7 @@
 # coding = utf-8
 
 import requests
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 
 class IpTools(object):
     

@@ -3,7 +3,7 @@
 from ip_proxy.config import MYSQL
 from twisted.enterprise import adbapi
 import pymysql
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import traceback
 
 # twisted adbapi连接
@@ -16,7 +16,7 @@ class MysqlConnection(object):
         keys = kwargs.keys()
         self.type = 'syn' if 'type' in keys and kwargs['type'] == 'syn' else 'asyn'
         if not hasattr(self, 'conn') or not self.conn:
-            logger = log.getLogger('development')
+            logger = Log().getLogger('development')
             logger.info('connect')
             self.connect(kwargs)
         return self
@@ -46,7 +46,7 @@ class MysqlConnection(object):
         pass
 
     def close(self):
-        logger = log.getLogger('development')
+        logger = Log().getLogger('development')
         logger.info('close')
         if self.conn:
             self.conn.close()

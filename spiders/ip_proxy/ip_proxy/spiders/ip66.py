@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from ip_proxy.item.ip_item import IpItem
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import time
 import json
 from ip_proxy.spiders.base import BaseSpider
@@ -13,7 +13,7 @@ class Ip66Spider(BaseSpider):
     start_urls = ['http://www.66ip.cn/']
 
     def parse(self, response):
-        # logger = log.getLogger('development')
+        # logger = Log().getLogger('development')
         if response.url == self.base_url:
             # 解析起始页面的头部标签的url
             for li in response.xpath('//ul[@class="textlarge22"]/li'):

@@ -9,7 +9,7 @@ import scrapy
 import time
 import socket
 import struct
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import traceback
 
 class IpItem(scrapy.Item):
@@ -36,7 +36,7 @@ class IpItem(scrapy.Item):
                 params = (struct.unpack('!I', socket.inet_aton(self['ip']))[0], self['port'], time.time(), self['scheme'], -1, 0, self['source'])
                 pass
             except Exception as e:
-                logger = log.getLogger('development')
+                logger = Log().getLogger('development')
                 logger.error('ip is invalid:{}'.format(self['ip']))
                 logger.error(traceback.format_exc())
                 pass

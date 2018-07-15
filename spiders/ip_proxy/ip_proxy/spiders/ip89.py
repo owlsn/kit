@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from ip_proxy.item.ip_item import IpItem
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import time
 import json
 from ip_proxy.spiders.base import BaseSpider
@@ -13,7 +13,7 @@ class Ip89Spider(BaseSpider):
     start_urls = ['http://www.89ip.cn/']
 
     def parse(self, response):
-        # logger = log.getLogger('development')
+        # logger = Log().getLogger('development')
         item = IpItem()
 
         # 解析表格,获取ip数据

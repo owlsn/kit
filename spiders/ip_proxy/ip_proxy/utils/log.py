@@ -16,5 +16,3 @@ class Log(object):
 
     def getLogger(self, logger):
         return self.logging.getLogger(logger)
-
-log = Log()

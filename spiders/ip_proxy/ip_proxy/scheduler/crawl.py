@@ -4,7 +4,7 @@ import importlib
 from twisted.internet import reactor
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import traceback
 import yaml
 import time
@@ -13,7 +13,7 @@ class Crawl(object):
     
     def start(self, sched):
         try:
-            logger = log.getLogger('development')
+            logger = Log().getLogger('development')
             timeArray = time.localtime(time.time())
             date_time = time.strftime("%Y--%m--%d %H:%M:%S", timeArray)
             logger.info('crawl start at:{}'.format(date_time))
@@ -38,7 +38,7 @@ class Crawl(object):
                     raise Exception('yaml file is empty')
                     pass
         except Exception as e:
-            logger = log.getLogger('development')
+            logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
             pass
 

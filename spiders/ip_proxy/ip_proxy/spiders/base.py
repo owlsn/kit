@@ -3,7 +3,7 @@ import scrapy
 from scrapy import signals
 from ip_proxy.connection.redis_connection import redisDb1
 from ip_proxy.config import SPIDER_SET
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 from ip_proxy.connection.mysql_connection import mysql
 
 class BaseSpider(scrapy.Spider):
@@ -13,7 +13,7 @@ class BaseSpider(scrapy.Spider):
         self.conn = redisDb1.conn
         # 保存当前执行中的spider名称，以便在定时任务中判断
         self.spider_set = SPIDER_SET if SPIDER_SET else 'spider_set'
-        logger = log.getLogger('development')
+        logger = Log().getLogger('development')
         logger.info("{} init".format(self.__class__.__name__))
         pass
 
@@ -31,7 +31,7 @@ class BaseSpider(scrapy.Spider):
         cls_name = self.__class__.__name__
         self.conn.srem(self.spider_set, cls_name)
         mysql.close()
-        logger = log.getLogger('development')
+        logger = Log().getLogger('development')
         logger.info("{} spider_closed".format(self))
         pass
 
@@ -39,6 +39,6 @@ class BaseSpider(scrapy.Spider):
         # spider开始在集合中加入对应标志数据
         cls_name = self.__class__.__name__
         self.conn.sadd(self.spider_set, cls_name)
-        logger = log.getLogger('development')
+        logger = Log().getLogger('development')
         logger.info("{} spider_opened".format(self))
         pass

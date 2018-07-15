@@ -3,7 +3,7 @@ from ip_proxy.connection.redis_connection import redisDb1
 from ip_proxy.connection.mysql_connection import mysql
 from ip_proxy.config import QUEUE_NUM
 import traceback
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import time
 
 class IpQueue(object):
@@ -19,7 +19,7 @@ class IpQueue(object):
 
     def do_select(self):
         try:
-            logger = log.getLogger('development')
+            logger = Log().getLogger('development')
             timeArray = time.localtime(time.time())
             date_time = time.strftime("%Y--%m--%d %H:%M:%S", timeArray)
             logger.info('ip_queue start at:{}'.format(date_time))
@@ -47,7 +47,7 @@ class IpQueue(object):
                         start = start + 1
             pass
         except Exception as e:
-            logger = log.getLogger('development')
+            logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
             mysql.close()
             pass

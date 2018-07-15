@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import requests
 from ip_proxy.spiders.base import BaseSpider
 from ip_proxy.utils.image import img, Img
@@ -20,7 +20,7 @@ class CooboboSpider(BaseSpider):
     start_urls = ['http://www.coobobo.com/free-http-proxy']
 
     def parse(self, response):
-        logger = log.getLogger('development')
+        logger = Log().getLogger('development')
         item = IpItem()
         # 解析表格,获取ip数据
         img = Img(cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe')

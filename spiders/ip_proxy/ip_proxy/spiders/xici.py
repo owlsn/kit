@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from ip_proxy.item.ip_item import IpItem
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import time
 import json
 from ip_proxy.spiders.base import BaseSpider
@@ -18,7 +18,7 @@ class XiciSpider(BaseSpider):
         ]
 
     def parse(self, response):
-        # logger = log.getLogger('development')
+        # logger = Log().getLogger('development')
         item = IpItem()
         # 解析分页的url
         for a in response.xpath('//div[@class="pagination"]/a'):

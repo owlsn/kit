@@ -22,7 +22,7 @@ class RandomUserAgentMiddleware(object):
     def from_crawler(cls, crawler):
         # This method is used by Scrapy to create your spiders.
 
-        # logger = log.getLogger('debug')
+        # logger = Log().getLogger('debug')
         # logger.debug('random user agent')
         s = cls(crawler.settings.getlist('USER_AGENTS'))
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)

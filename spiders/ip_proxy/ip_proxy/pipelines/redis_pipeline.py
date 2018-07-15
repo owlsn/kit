@@ -9,7 +9,7 @@
 from ip_proxy.connection.redis_connection import redisDb0
 from scrapy.exceptions import DropItem
 import time
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 
 class RedisPipeline(object):
 
@@ -24,7 +24,7 @@ class RedisPipeline(object):
             item['scheme'] = 'http'
         key = item['scheme'] + ':' + item['ip'] + ':' + item['port']
         exist = self.conn.get(key)
-        logger = log.getLogger('debug')
+        logger = Log().getLogger('debug')
         if exist:
             # logger.debug('scheme:{},ip:{},port:{},is existed'.format(item['scheme'], item['ip'], item['port']))
             raise DropItem('ip:' + item['ip'] + 'existed')

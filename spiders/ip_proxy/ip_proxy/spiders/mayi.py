@@ -2,7 +2,7 @@
 import scrapy
 from scrapy.utils.project import get_project_settings
 from ip_proxy.item.ip_item import IpItem
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 import re
 import requests
 from ip_proxy.spiders.base import BaseSpider
@@ -18,7 +18,7 @@ class MayiSpider(BaseSpider):
         ]
 
     def parse(self, response):
-        logger = log.getLogger('development')
+        logger = Log().getLogger('development')
         item = IpItem()
         # logger.info(response.text)
         regex = r'proxy_token=[\s\S]{8}'

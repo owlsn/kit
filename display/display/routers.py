@@ -1,3 +1,4 @@
+# coding = utf-8
 from handlers import MainHandler
 from handlers import HomeHandler
 from handlers import IndexHandler

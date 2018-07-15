@@ -2,7 +2,7 @@
 import scrapy
 from ip_proxy.spiders.base import BaseSpider
 from ip_proxy.item.ip_item import IpItem
-from ip_proxy.utils.log import log
+from ip_proxy.utils.log import Log
 
 class Data5uSpider(BaseSpider):
     name = 'data5u'
@@ -17,7 +17,7 @@ class Data5uSpider(BaseSpider):
     ]
 
     def parse(self, response):
-        logger = log.getLogger('development')
+        logger = Log().getLogger('development')
         item = IpItem()
         # 解析表格,获取ip数据
         for ul in response.xpath('//div[@class="wlist"]/ul/li[2]/ul'):

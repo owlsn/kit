@@ -1,7 +1,8 @@
-import tornado.ioloop
-import tornado.web
-import routers
+# coding = utf-8
+from tornado import ioloop, web
+from routers import routers
 import os
+import sys
 import config
 
 def make_app():
