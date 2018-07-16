@@ -1,10 +1,19 @@
 # coding = utf-8
 import os
 
-root_path = os.getcwd()
+ROOT = os.path.abspath(os.path.dirname(__file__))
 
-public_path = root_path + "/public/"
+PUBLIC = ROOT + "/public/"
 
-template_path = public_path + "templates/"
+TEMPLATES = PUBLIC + "templates/"
 
-static_path = public_path + "static/"
+STATIC = PUBLIC + "static/"
+
+MYSQL = {
+    'host' : '127.0.0.1',
+    'port' : 3306,
+    'database' : 'ip_proxy',
+    'user' : 'root',
+    'password' : '123456',
+    'charset' : 'utf8'
+}

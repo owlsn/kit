@@ -1,0 +1,11 @@
+<html>
+   <head>
+      <title>{{ title }}</title>
+      <!-- <link rel="stylesheet" href="{{ static_url('css/index.css') }}"/> -->
+   </head>
+   <body>
+     {% block body %}
+     {% end %}
+     {% raw linkify('https://github.com', extra_params='ref=website') %}
+   </body>
+ </html>

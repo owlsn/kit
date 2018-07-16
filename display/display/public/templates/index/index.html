@@ -1,12 +1,21 @@
-<html>
-   <head>
-      <title>{{ title }}</title>
-   </head>
-   <body>
-     <ul>
-       {% for item in items %}
-         <li>{{ escape(item) }}</li>
-       {% end %}
-     </ul>
-   </body>
- </html>
+{% extends '../common/base.html' %}
+{% block body %}
+<table>
+  <thead>
+    <th>ip</th>
+    <th>端口</th>
+    <th>类型</th>
+    <th>等级</th>
+    <th>是否获取地址信息</th>
+    <th>过期次数</th>
+    <th>捕获时间</th>
+    <th>检测时间</th>
+  </thead>
+  <tbody>
+      {% for item in items %}
+        {% module ip(item) %}
+      {% end %}
+  </tbody>
+</table>
+
+{% end %}
