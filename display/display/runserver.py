@@ -23,7 +23,7 @@ class IndexHandler(web.RequestHandler):
             for value in res:
                 data = {'ip' : value[0], 'port' : value[1], 'scheme' : value[2], 'level' : value[3], 'flag':value[4], 'times' : value[5], 'create_time': value[6], 'update_time' : value[7]}
                 li.append(data)
-        title = 'test'
+        title = 'ip list'
         items = li
         self.render('index/index.html', title = title, items = items)
 

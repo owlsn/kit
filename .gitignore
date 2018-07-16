@@ -8,3 +8,4 @@ dump.rdb
 .profile
 redis-stat-daemon.pid
 **/.DS_Store
+**/*.sql
