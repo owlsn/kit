@@ -6,6 +6,8 @@ p = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(p)
 from display.config import *
 from display.connections.mysql_connection import mysql
+from display.connections.redis_connection import redisDb1
+from display.utils.log import Log
 import socket
 import struct
 import json
@@ -17,6 +19,10 @@ class IndexHandler(web.RequestHandler):
     @web.asynchronous
     @gen.engine
     def get(self):
+        key = 'ip_queue_0'
+        d = self.application.redis.lpop(key)
+        logger = Log().getLogger('development')
+        logger.info(d)
         db = self.application.conn
         cursor = db.cursor()
         sql = """select ip, port, scheme, level, flag, times, create_time, update_time  from `ip` order by update_time asc limit %s,%s """
@@ -57,6 +63,7 @@ class App(web.Application):
             'ip' : IpModule
         }
         self.conn = mysql.get_instance().conn
+        self.redis = redisDb1.conn
         web.Application.__init__(self, handers, ui_modules = ui_modules, **settings)
 
 class IpModule(web.UIModule):
