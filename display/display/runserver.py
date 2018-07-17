@@ -90,7 +90,7 @@ class ListHandler(web.RequestHandler):
             'start' : start,
             'limit' : limit,
             'data' : li,
-            'length' : total
+            'total' : total
         }
         self.write(json.dumps(data))
 
