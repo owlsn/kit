@@ -107,21 +107,31 @@ class App(web.Application):
             debug = True
         )
         ui_modules = {
-            'ip' : IpModule
+            'aside' : AsideModule,
+            'header' : HeaderModule,
+            'footer' : FooterModule
         }
         self.conn = mysql.get_instance().conn
         self.redis = redisDb1.conn
         web.Application.__init__(self, handers, ui_modules = ui_modules, **settings)
 
-class IpModule(web.UIModule):
-    def render(self, item):
-        return self.render_string('index/ip.html', item = item)
+class AsideModule(web.UIModule):
+    def render(self):
+        return self.render_string('common/aside.html')
 
-    def css_files(self):
-        return 'css/index.css'
+    # def css_files(self):
+    #     return 'css/index.css'
 
-    def javascript_files(self):
-        return 'js/index.js'
+    # def javascript_files(self):
+    #     return 'js/index.js'
+
+class HeaderModule(web.UIModule):
+    def render(self):
+        return self.render_string('common/header.html')
+
+class FooterModule(web.UIModule):
+    def render(self):
+        return self.render_string('common/footer.html')
 
 
 if __name__ == "__main__":

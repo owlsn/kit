@@ -30,10 +30,8 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-  {% block header %}
-  {% end %}
-  {% block aside %}
-  {% end %}
+  {% module header() %}
+  {% module aside() %}
   <!-- Left side column. contains the logo and sidebar -->
 
   <!-- Content Wrapper. Contains page content -->
@@ -41,8 +39,7 @@
   {% end %}
 
 
-  {% block footer %}
-  {% end %}
+  {% module footer() %}
 
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
