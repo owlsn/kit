@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{ static_url('bower_components/Ionicons/css/ionicons.min.css') }}" >
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ static_url('dist/css/AdminLTE.min.css') }}" >
+  <link rel="stylesheet" href="{{ static_url('dist/css/skins/_all-skins.min.css') }}">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   {% block css %}
@@ -30,16 +31,15 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-  {% module header() %}
-  {% module aside() %}
+  {% module header(show_header) %}
+  {% module aside(show_aside) %}
   <!-- Left side column. contains the logo and sidebar -->
 
   <!-- Content Wrapper. Contains page content -->
   {% block content %}
   {% end %}
 
-
-  {% module footer() %}
+  {% module footer(show_footer) %}
 
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
@@ -57,6 +57,23 @@
 </script>
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ static_url('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<!-- FastClick -->
+<script src="{{ static_url('bower_components/fastclick/lib/fastclick.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ static_url('dist/js/adminlte.min.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ static_url('dist/js/demo.js') }}"></script>
+<script>
+  var uri = '{{ uri }}';
+  $('li>a').each(function(){
+    $(this).parent().removeClass('active');
+  });
+  $('li>a').each(function(){
+    if($(this).attr('href') == uri){
+      $(this).parents('li').addClass('active');
+    }
+  });
+</script>
 {% block js %}
 {% end %}
 </body>
