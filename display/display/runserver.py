@@ -25,14 +25,15 @@ class BaseHandler(web.RequestHandler):
         self.render_dict = {'show_header' : show_header, 'show_aside' : show_aside, 'show_footer' : show_footer, 'uri' : self.request.uri}
 
 
-class IndexHandler(BaseHandler):
+class Index2Handler(BaseHandler):
     def get(self):
-        index = self.get_argument('type', 1)
-        title = 'IndexHandler'
-        if index == 1:
-            self.render('index/index1.html', title = title, **self.render_dict)
-        else:
-            self.render('index/index2.html', title = title, **self.render_dict)
+        title = 'Index2Handler'
+        self.render('index/index2.html', title = title, **self.render_dict)
+
+class Index1Handler(BaseHandler):
+    def get(self):
+        title = 'Index1Handler'
+        self.render('index/index1.html', title = title, **self.render_dict)
 
 # class TestHandler(BaseHandler):
 #     @web.asynchronous
@@ -285,7 +286,8 @@ class WidgetsHandler(BaseHandler):
 class App(web.Application):
     def __init__(self):
         handers = [
-            routing.URLSpec(r'/index', IndexHandler, name = 'index'),
+            routing.URLSpec(r'/index1', Index1Handler, name = 'index1'),
+             routing.URLSpec(r'/index2', Index2Handler, name = 'index2'),
             routing.URLSpec(r'/calendar', CalendarHandler, name = 'calendar'),
             routing.URLSpec(r'/charts/chartjs', ChartsJsHandler, name = 'chartjs'),
             routing.URLSpec(r'/charts/flot', ChartsFlotHander, name = 'flot'),
