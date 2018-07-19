@@ -11,7 +11,7 @@ URL_LIST :
             minute : 0
         id : "ip66"
         coalesce : 0
-        max_instances : 3
+        max_instances : 1
     -
         name : "ip89"
         module : "ip_proxy.spiders.ip89"
@@ -22,7 +22,7 @@ URL_LIST :
             minute : 0
         id : "ip89"
         coalesce : 0
-        max_instances : 3
+        max_instances : 1
     -
         name : "kuaidaili"
         module : "ip_proxy.spiders.kuaidaili"
@@ -33,7 +33,7 @@ URL_LIST :
             minute : 0
         id : "kuaidaili"
         coalesce : 0
-        max_instances : 3
+        max_instances : 1
     -
         name : "check"
         module : "ip_proxy.spiders.check"
@@ -44,7 +44,7 @@ URL_LIST :
             minute : 0
         id : "check"
         coalesce : 0
-        max_instances : 3
+        max_instances : 1
     -
         name : "xici"
         module : "ip_proxy.spiders.xici"
@@ -55,7 +55,7 @@ URL_LIST :
             minute : 0
         id : "xici"
         coalesce : 0
-        max_instances : 3
+        max_instances : 1
     -
         name : "data5u"
         module : "ip_proxy.spiders.data5u"
@@ -66,7 +66,7 @@ URL_LIST :
             minute : '*/1'
         id : "data5u"
         coalesce : 0
-        max_instances : 3
+        max_instances : 1
     -
         name : "mayi"
         module : "ip_proxy.spiders.mayi"
@@ -77,5 +77,5 @@ URL_LIST :
             minute : 0
         id : "mayi"
         coalesce : 0
-        max_instances : 3
+        max_instances : 1
 
