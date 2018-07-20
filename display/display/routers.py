@@ -15,7 +15,7 @@ from display.handlers.widgets import *
 from display.ui_modules import *
 
 ROUTERS = [
-    URLSpec(r'/index1', index1.Index1Handler, name = 'index1'),
+    URLSpec(r'/', index1.Index1Handler, name = 'index'),
     URLSpec(r'/index1', index1.Index1Handler, name = 'index1'),
     URLSpec(r'/index2', index2.Index2Handler, name = 'index2'),
     URLSpec(r'/calendar', calendar.CalendarHandler, name = 'calendar'),
