@@ -10,3 +10,4 @@ redis-stat-daemon.pid
 **/.DS_Store
 **/*.sql
 **/bower_components
+**/node_modules
