@@ -91,7 +91,6 @@ class IpProxyCheckBeginMiddleware(object):
         except:
             logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
-            mysql.close()
             pass
 
     def handle_error(self, failure):

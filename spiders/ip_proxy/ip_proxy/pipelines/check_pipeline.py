@@ -37,5 +37,4 @@ class CheckPipeline(object):
             logger.error('sql:' + update_sql)
             logger.error('params:' + json.dumps(params))
             logger.error(traceback.format_exc())
-            mysql.close()
             pass

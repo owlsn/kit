@@ -50,7 +50,6 @@ class IpQueue(object):
         except Exception as e:
             logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
-            mysql.close()
             pass
 
 ip_queue = IpQueue()

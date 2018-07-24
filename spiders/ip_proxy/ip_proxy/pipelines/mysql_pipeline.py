@@ -47,6 +47,5 @@ class MysqlPipeline(object):
             logger.error('sql:' + insert_sql)
             logger.error('params:' + json.dumps(params))
             logger.error(traceback.format_exc())
-            mysql.close()
             pass
         
