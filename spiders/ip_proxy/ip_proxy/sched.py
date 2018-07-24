@@ -7,11 +7,12 @@ p = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(p)
 from ip_proxy.utils.log import Log
 from ip_proxy.scheduler.crawl import crawler
-from ip_proxy.scheduler.ip_queue import ip_queue
+from ip_proxy.scheduler.ip_queue import IpQueue
 from twisted.internet import reactor
 
 def push_ip():
     try:
+        ip_queue = IpQueue()
         ip_queue.do_select()
         pass
     except Exception as e:

@@ -50,5 +50,3 @@ class IpQueue(object):
             logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
             pass
-
-ip_queue = IpQueue()
