@@ -45,7 +45,6 @@ class IpQueue(object):
                             else:
                                 self.redis.rpush(self.getQueue(0), data)
                         start = start + 1
-            mysql.close()
             pass
         except Exception as e:
             logger = Log().getLogger('development')
