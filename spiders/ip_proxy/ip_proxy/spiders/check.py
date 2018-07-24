@@ -66,28 +66,25 @@ class CheckSpider(BaseSpider):
         pass
     
     def errback_httpbin(self, failure):
-        try:
-            item = CheckItem()
-            level = self.request.meta['level']
-            item['delay'] = -1
-            item['times'] = self.request.meta['times']
-            item['level'] = 0
-            item['ip'] = self.request.meta['proxy_ip']
-            item['port'] = self.request.meta['proxy_port']
-            item['scheme'] = self.request.meta['proxy_scheme']
-            yield item
-            for i in range(QUEUE_NUM):
-                length = self.conn.llen(QUEUE_KEY + str(i))
-                if length:
-                    self.request = scrapy.Request(self.base_url, meta={'level':i}, priority = (QUEUE_NUM - i), callback=self.parse,
-                                        errback=self.errback_httpbin,
-                                        dont_filter=True)
-                    yield self.request
-            pass
-        except Exception as e:
-            logger = Log().getLogger('development')
-            logger.info('parse error:{},time:{},level:{},request.meta:{}'.format(failure, time.time(), self.level, self.request.meta))
-            pass
+        item = CheckItem()
+        level = self.request.meta['level']
+        item['delay'] = -1
+        item['times'] = self.request.meta['times']
+        item['level'] = 0
+        item['ip'] = self.request.meta['proxy_ip']
+        item['port'] = self.request.meta['proxy_port']
+        item['scheme'] = self.request.meta['proxy_scheme']
+        # logger = Log().getLogger('development')
+        # logger.info('parse error:{},time:{},level:{},item:{}'.format(failure, time.time(), self.level, item))
+        yield item
+        for i in range(QUEUE_NUM):
+            length = self.conn.llen(QUEUE_KEY + str(i))
+            if length:
+                self.request = scrapy.Request(self.base_url, meta={'level':i}, priority = (QUEUE_NUM - i), callback=self.parse,
+                                    errback=self.errback_httpbin,
+                                    dont_filter=True)
+                yield self.request
+        pass
         
         # logger = Log().getLogger('development')
         # logger.info('parse error:{},time:{},level:{},request.meta:{}'.format(failure, time.time(), self.level, self.request.meta))
