@@ -7,3 +7,6 @@
 ## deploy 
     1. deploy with docker 
  
+## Inspired By
+- [pymysql-connpool](https://github.com/jkklee/pymysql-connpool)
+- [AdminLTE](https://github.com/almasaeed2010/AdminLTE)

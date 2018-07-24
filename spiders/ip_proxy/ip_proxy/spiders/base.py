@@ -30,7 +30,7 @@ class BaseSpider(scrapy.Spider):
         # spider关闭去除集合中的对应标志数据
         cls_name = self.__class__.__name__
         self.conn.srem(self.spider_set, cls_name)
-        mysql.close()
+        # mysql.close()
         logger = Log().getLogger('development')
         logger.info("{} spider_closed".format(self))
         pass
