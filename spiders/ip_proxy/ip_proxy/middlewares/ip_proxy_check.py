@@ -8,7 +8,7 @@
 from scrapy import signals
 from ip_proxy.utils.log import Log
 from ip_proxy.connection.redis_connection import redisDb1
-from ip_proxy.connection.mysql_connection import mysql
+from ip_proxy.connection.mysql_connection import mysqlAsyn
 import socket
 import struct
 import time
@@ -23,7 +23,7 @@ class IpProxyCheckBeginMiddleware(object):
     # passed objects.
     def __init__(self):
         self.conn = redisDb1.conn
-        self.mysql = mysql.get_instance().conn
+        self.mysql = mysqlAsyn.dbpool
         pass
 
     @classmethod
@@ -89,6 +89,7 @@ class IpProxyCheckBeginMiddleware(object):
                     return
             pass
         except:
+            mysqlAsyn.connect()
             logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
             pass

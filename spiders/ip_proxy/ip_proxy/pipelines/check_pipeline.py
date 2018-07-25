@@ -1,6 +1,6 @@
 # coding = utf-8
 
-from ip_proxy.connection.mysql_connection import mysql
+from ip_proxy.connection.mysql_connection import mysqlAsyn
 import time
 import json
 from ip_proxy.utils.log import Log
@@ -10,7 +10,7 @@ import copy
 class CheckPipeline(object):
 
     def __init__(self):
-        self.conn = mysql.get_instance().conn
+        self.conn = mysqlAsyn.dbpool
         pass
 
     def process_item(self, item, spider):
@@ -34,6 +34,7 @@ class CheckPipeline(object):
             cursor.execute(update_sql, params)
             logger.info('update_sql:{},params:{}'.format(update_sql, params))
         except Exception as e:
+            mysqlAsyn.connect()
             logger.error('sql:' + update_sql)
             logger.error('params:' + json.dumps(params))
             logger.error(traceback.format_exc())

@@ -4,7 +4,6 @@ from scrapy import signals
 from ip_proxy.connection.redis_connection import redisDb1
 from ip_proxy.config import SPIDER_SET
 from ip_proxy.utils.log import Log
-from ip_proxy.connection.mysql_connection import mysql
 
 class BaseSpider(scrapy.Spider):
 

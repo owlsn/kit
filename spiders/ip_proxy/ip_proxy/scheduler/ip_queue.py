@@ -1,6 +1,10 @@
 # coding = utf-8
+# import os
+# import sys
+# p = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# sys.path.append(p)
 from ip_proxy.connection.redis_connection import redisDb1
-from ip_proxy.connection.mysql_connection import mysql
+from ip_proxy.connection.mysql_connection import mysqlSyn
 from ip_proxy.config import QUEUE_NUM
 import traceback
 from ip_proxy.utils.log import Log
@@ -10,7 +14,7 @@ class IpQueue(object):
 
     def __init__(self):
         self.redis = redisDb1.conn
-        self.mysql = mysql.get_instance(type = 'syn').conn
+        self.mysql = mysqlSyn.conn
         pass
 
     def getQueue(self, level):
@@ -47,6 +51,11 @@ class IpQueue(object):
                         start = start + 1
             pass
         except Exception as e:
+            mysqlSyn.connect()
             logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
             pass
+
+# if __name__ == '__main__':
+#     ip_queue = IpQueue()
+#     ip_queue.do_select()
