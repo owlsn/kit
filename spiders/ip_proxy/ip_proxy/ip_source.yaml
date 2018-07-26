@@ -40,11 +40,11 @@ URL_LIST :
         class : "CheckSpider"
         type : "cron"
         time : 
-            hour : '*/1'
+            hour : '*/2'
             minute : 0
         id : "check"
         coalesce : 0
-        max_instances : 1
+        max_instances : 3
     -
         name : "xici"
         module : "ip_proxy.spiders.xici"
