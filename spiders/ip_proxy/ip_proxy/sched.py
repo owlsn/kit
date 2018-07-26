@@ -13,7 +13,7 @@ from twisted.internet import reactor
 def push_ip():
     try:
         ip_queue = IpQueue()
-        ip_queue.start()()
+        ip_queue.start()
         pass
     except Exception as e:
         logger = Log().getLogger('development')
