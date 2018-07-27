@@ -70,7 +70,7 @@ class IpProxyCheckBeginMiddleware(object):
     
     def do_update(self, cursor, info):
         try:
-            if ('ip' not in info.keys() or not info['ip']) or ('id' not in info.keys() or not info['id']):
+            if ('ip' not in info.keys() or not info['ip']) or ('key' not in info.keys() or not info['key']):
                 return
             else:
                 tool = IpTools()
