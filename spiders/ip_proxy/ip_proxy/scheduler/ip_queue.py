@@ -4,6 +4,7 @@
 # p = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # sys.path.append(p)
 # from twisted.internet import reactor
+
 from ip_proxy.connection.redis_connection import redisDb1
 from ip_proxy.connection.mysql_connection import mysqlAsyn
 from ip_proxy.config import QUEUE_NUM
@@ -50,7 +51,7 @@ class IpQueue(object):
             if length < 10000:
                 start = 0
                 limit = 2500
-                sql = """select ip, port, scheme, level, flag, times from `ip` where level = %s order by update_time asc limit %s,%s """
+                sql = """select id, ip, port, scheme, level, flag, times from `ip` where level = %s order by update_time asc limit %s,%s """
                 while True:
                     params = (i, start * limit, limit)
                     cursor.execute(sql, params)
@@ -58,7 +59,7 @@ class IpQueue(object):
                     if not len(res):
                         break
                     for value in res:
-                        data = {'ip': value['ip'], 'port': value['port'], 'scheme': value['scheme'], 'level': value['level'], 'flag': value['flag'], 'times': value['times']}
+                        data = {'key': value['id'], 'ip': value['ip'], 'port': value['port'], 'scheme': value['scheme'], 'level': value['level'], 'flag': value['flag'], 'times': value['times']}
                         if data['level'] is not None:
                             self.redis.rpush(self.getQueue(data['level']), data)
                         else:

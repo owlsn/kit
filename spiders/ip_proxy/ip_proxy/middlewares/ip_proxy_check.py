@@ -48,7 +48,7 @@ class IpProxyCheckBeginMiddleware(object):
             raise IgnoreRequest
         # 获取ip地址信息
         if 'flag' not in data.keys() or not data['flag']:
-            info = {'ip' : data['ip']}
+            info = {'ip' : data['ip'], 'key' : data['key']}
             res = self.mysql.runInteraction(self.do_update, info)
             res.addErrback(self.handle_error)
 
@@ -63,17 +63,19 @@ class IpProxyCheckBeginMiddleware(object):
         request.meta['proxy_ip'] = data['ip']
         request.meta['proxy_port'] = data['port']
         request.meta['proxy_scheme'] = data['scheme']
+        request.meta['key'] = data['key']
         # logger = Log().getLogger('development')
         # logger.info('begin middleware start, request.meta:{},time:{}'.format(request.meta, time.time()))
         return None
     
     def do_update(self, cursor, info):
         try:
-            if 'ip' not in info.keys() or not info['ip']:
+            if ('ip' not in info.keys() or not info['ip']) or ('id' not in info.keys() or not info['id']):
                 return
             else:
                 tool = IpTools()
                 ip = info['ip']
+                key = info['key']
                 r = tool.info(socket.inet_ntoa(struct.pack('I',socket.htonl(int(ip)))))
                 if r != None and r['code'] == 0:
                     data = r['data']
@@ -82,8 +84,8 @@ class IpProxyCheckBeginMiddleware(object):
                     city = data['city']
                     region = data['region']
                     area = data['area']
-                    update_sql =  """ update ip set isp = %s,country = %s,region = %s, city = %s, area = %s, flag = 1 where ip = %s;"""
-                    params = (isp, country, region, city, area, ip)
+                    update_sql =  """ update ip set isp = %s,country = %s,region = %s, city = %s, area = %s, flag = 1 where id = %s;"""
+                    params = (isp, country, region, city, area, key)
                     cursor.execute(update_sql, params)
                 else:
                     return

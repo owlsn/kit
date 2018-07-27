@@ -31,8 +31,9 @@ class CheckPipeline(object):
         logger = Log().getLogger('development')
         update_sql, params = item.get_update_sql()
         try:
-            cursor.execute(update_sql, params)
-            logger.info('update_sql:{},params:{}'.format(update_sql, params))
+            if update_sql is not None:
+                cursor.execute(update_sql, params)
+                logger.info('update_sql:{},params:{}'.format(update_sql, params))
         except Exception as e:
             mysqlAsyn.connect()
             logger.error('sql:' + update_sql)

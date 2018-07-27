@@ -53,6 +53,7 @@ class CheckSpider(BaseSpider):
         item['ip'] = response.meta['proxy_ip']
         item['port'] = response.meta['proxy_port']
         item['scheme'] = response.meta['proxy_scheme']
+        item['key'] = response.meta['key']
         yield item
         for i in range(QUEUE_NUM):
             length = self.conn.llen(QUEUE_KEY + str(i))
@@ -74,6 +75,7 @@ class CheckSpider(BaseSpider):
         item['ip'] = self.request.meta['proxy_ip']
         item['port'] = self.request.meta['proxy_port']
         item['scheme'] = self.request.meta['proxy_scheme']
+        item['key'] = self.request.meta['key']
         # logger = Log().getLogger('development')
         # logger.info('parse error:{},time:{},level:{},item:{}'.format(failure, time.time(), self.level, item))
         yield item
