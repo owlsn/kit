@@ -43,7 +43,6 @@ class MysqlPipeline(object):
             if not res:
                 raise Exception('insert error')
         except Exception as e:
-            mysqlAsyn.connect()
             logger = Log().getLogger('development')
             logger.error('sql:' + insert_sql)
             logger.error('params:' + json.dumps(params))

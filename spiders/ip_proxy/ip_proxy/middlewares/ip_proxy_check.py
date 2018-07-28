@@ -91,7 +91,6 @@ class IpProxyCheckBeginMiddleware(object):
                     return
             pass
         except:
-            mysqlAsyn.connect()
             logger = Log().getLogger('development')
             logger.error(traceback.format_exc())
             pass

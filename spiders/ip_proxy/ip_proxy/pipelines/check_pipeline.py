@@ -35,7 +35,6 @@ class CheckPipeline(object):
                 cursor.execute(update_sql, params)
                 logger.info('update_sql:{},params:{}'.format(update_sql, params))
         except Exception as e:
-            mysqlAsyn.connect()
             logger.error('sql:' + update_sql)
             logger.error('params:' + json.dumps(params))
             logger.error(traceback.format_exc())
