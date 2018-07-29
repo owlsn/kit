@@ -16,6 +16,10 @@ REDIS = {
     'db' : 0,
     'password' : '',
 }
+MONGO = {
+    'host': '127.0.0.1',
+    'port' : 27017
+}
 LOG_PATH =  ROOT + "/log/"
 IMAGE_PATH= ROOT + "/images/"
 if not os.path.exists(LOG_PATH):
@@ -37,16 +41,7 @@ LOG_CONFIG = {
             "formatter":"simple",
             "stream":"ext://sys.stdout"
         },
-        "debug_file_handler":{
-            "class":"logging.handlers.RotatingFileHandler",
-            "level":"DEBUG",
-            "formatter":"simple",
-            "filename": LOG_PATH + time.strftime("%Y-%m-%d", time.localtime())+".debug.log",
-            "maxBytes":10485760,
-            "backupCount":20,
-            "encoding":"utf8"
-        },
-        "info_file_handler":{
+        "file_handler":{
             "class":"logging.handlers.RotatingFileHandler",
             "level":"INFO",
             "formatter":"simple",
@@ -55,41 +50,18 @@ LOG_CONFIG = {
             "backupCount":20,
             "encoding":"utf8"
         },
-        "warn_file_handler":{
-            "class":"logging.handlers.RotatingFileHandler",
-            "level":"WARNING",
-            "formatter":"simple",
-            "filename":LOG_PATH + time.strftime("%Y-%m-%d", time.localtime())+".warnings.log",
-            "maxBytes":10485760,
-            "backupCount":20,
-            "encoding":"utf8"
-        },
-        "error_file_handler":{
-            "class":"logging.handlers.RotatingFileHandler",
-            "level":"ERROR",
-            "formatter":"simple",
-            "filename":LOG_PATH + time.strftime("%Y-%m-%d", time.localtime())+".errors.log",
-            "maxBytes":10485760,
-            "backupCount":20,
-            "encoding":"utf8"
+        "mongo_handler":{
+            "class": "ip_proxy.utils.log.MongoLog",
+            "level": "DEBUG",
+            "formatter": "simple"
         }
     },
     "loggers":{
-        "debug":{
-            "level":"DEBUG",
-            "handlers":["debug_file_handler"],
-            "propagate":"no"
-        },
         "development":{
-            "level":"INFO",
-            "handlers":["info_file_handler"],
+            "level":"DEBUG",
+            "handlers":["file_handler"],
             "propagate":"no"
-        },
-        "production":{
-            "level":"WARNING",
-            "handlers":["warn_file_handler"],
-            "propagate":"no"
-        },
+        }
     }
 }
 # ip队列配置
