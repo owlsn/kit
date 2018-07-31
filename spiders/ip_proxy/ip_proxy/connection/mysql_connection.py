@@ -22,7 +22,8 @@ class MysqlAsyn(object):
                 user = kwargs['user'] if 'user' in keys and kwargs['user'] else self.config['user'],
                 passwd = kwargs['passwd'] if 'passwd' in keys and kwargs['passwd'] else self.config['password'],
                 charset = kwargs['charset'] if 'charset' in keys and kwargs['charset'] else self.config['charset'],
-                cursorclass = pymysql.cursors.DictCursor
+                cursorclass=pymysql.cursors.DictCursor,
+                cp_reconnect = True
             )
         self.dbpool = adbapi.ConnectionPool('pymysql', **dbparams)
         pass
