@@ -40,8 +40,8 @@ URL_LIST :
         class : "CheckSpider"
         type : "cron"
         time : 
-            hour : '*/2'
-            minute : 0
+            hour : '*'
+            minute : '*/15'
         id : "check"
         coalesce : 0
         max_instances : 3
