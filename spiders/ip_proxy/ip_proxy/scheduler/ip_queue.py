@@ -7,7 +7,7 @@
 
 from ip_proxy.connection.redis_connection import redisDb1
 from ip_proxy.connection.mysql_connection import mysqlAsyn
-from ip_proxy.config import QUEUE_NUM
+from ip_proxy.config import QUEUE_NUM, QUEUE_KEY
 import traceback
 from ip_proxy.utils.log import Log
 import time
@@ -21,7 +21,7 @@ class IpQueue(object):
         pass
 
     def getQueue(self, level):
-        key = 'ip_queue_' + str(level)
+        key = QUEUE_KEY + str(level)
         return key
 
     def handle_error(self, failure):
@@ -51,7 +51,7 @@ class IpQueue(object):
             if length < 10000:
                 start = 0
                 limit = 2500
-                sql = """select id, ip, port, scheme, level, flag, times from `ip` where level = %s order by update_time asc limit %s,%s """
+                sql = """select id, ip, port, scheme, level, flag, times from `ip` where level = %s and `times` = 0 order by update_time asc limit %s,%s """
                 while True:
                     params = (i, start * limit, limit)
                     cursor.execute(sql, params)

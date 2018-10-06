@@ -92,6 +92,7 @@ class IpProxyCheckBeginMiddleware(object):
             pass
         except:
             logger = Log().getLogger('development')
+            logger.error("error info:{}".format(info))
             logger.error(traceback.format_exc())
             pass
 

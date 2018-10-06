@@ -7,6 +7,7 @@
 
 # 将ip存入mysql数据库
 from ip_proxy.connection.mysql_connection import mysqlAsyn
+from ip_proxy.config import QUEUE_KEY
 import time
 import json
 from ip_proxy.utils.log import Log
@@ -44,8 +45,8 @@ class MysqlPipeline(object):
                 raise Exception('insert error')
         except Exception as e:
             logger = Log().getLogger('development')
-            logger.error('sql:' + insert_sql)
-            logger.error('params:' + json.dumps(params))
+            logger.error('sql:{}'.format(insert_sql))
+            logger.error('params:{}'.format(params))
             logger.error(traceback.format_exc())
             pass
         

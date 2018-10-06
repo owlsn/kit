@@ -28,7 +28,7 @@ class CheckSpider(BaseSpider):
     custom_settings = {
         'RETRY_ENABLED' : False,
         'RETRY_TIMES' : 2,
-        'DOWNLOAD_TIMEOUT' : 60,
+        'DOWNLOAD_TIMEOUT' : 30,
         'HTTPPROXY_AUTH_ENCODING' : 'utf-8',
         'CONCURRENT_REQUESTS' : 50,
         'CONCURRENT_REQUESTS_PER_DOMAIN' : 50,

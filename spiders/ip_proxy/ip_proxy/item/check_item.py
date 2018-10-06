@@ -26,7 +26,7 @@ class CheckItem(scrapy.Item):
                 self['level'] = int(self['delay'] / 10000) + 1
                 if self['level'] > (QUEUE_NUM - 1):
                     self['level'] = (QUEUE_NUM - 1)
-                update_sql = """ update ip set delay = %s,level = %s,update_time = %s, times = 0 where id = %s """
+                update_sql = """ update ip set delay = %s,level = %s,update_time = %s, times = 1 where id = %s """
                 params = (self['delay'], self['level'], time.time(), self['key'])
             else:
                 if 'times' in self.keys() and self['times'] is not None:

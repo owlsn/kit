@@ -1,6 +1,8 @@
 # coding = utf-8
 
 from ip_proxy.connection.mysql_connection import mysqlAsyn
+from ip_proxy.connection.redis_connection import redisDb1
+from ip_proxy.config import QUEUE_KEY
 import time
 import json
 from ip_proxy.utils.log import Log
@@ -11,6 +13,7 @@ class CheckPipeline(object):
 
     def __init__(self):
         self.conn = mysqlAsyn.dbpool
+        self.redis = redisDb1.conn
         pass
 
     def process_item(self, item, spider):
@@ -33,9 +36,11 @@ class CheckPipeline(object):
         try:
             if update_sql is not None:
                 cursor.execute(update_sql, params)
-                logger.info('update_sql:{},params:{}'.format(update_sql, params))
+                data = {'key': item['key'], 'ip': item['ip'], 'port': item['port'], 'scheme': item['scheme'], 'level': item['level'], 'flag': 1, 'times': 1}
+                logger.info('update_sql:{},params:{},data:{}'.format(update_sql, params, data))
+                self.redis.rpush(QUEUE_KEY + str(item['level']), data)
         except Exception as e:
-            logger.error('sql:' + update_sql)
-            logger.error('params:' + json.dumps(params))
+            logger.error('sql:{}'.format(update_sql))
+            logger.error('params:{}'.format(params))
             logger.error(traceback.format_exc())
             pass
