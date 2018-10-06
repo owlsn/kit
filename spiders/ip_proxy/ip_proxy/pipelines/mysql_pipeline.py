@@ -36,7 +36,7 @@ class MysqlPipeline(object):
 
     def do_insert(self, cursor, item):
         insert_sql, params = item.get_insert_sql()
-        if insert_sql is None:
+        if insert_sql is None or params is None:
             return
         try:
             res = cursor.execute(insert_sql, params)

@@ -39,7 +39,7 @@ class IpItem(scrapy.Item):
                 logger = Log().getLogger('development')
                 logger.error('ip is invalid:{}'.format(self['ip']))
                 logger.error(traceback.format_exc())
-                pass
+                return None
             return insert_sql, params
         else:
             return None
