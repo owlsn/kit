@@ -63,7 +63,7 @@ URL_LIST :
         type : "cron"
         time : 
             hour : '*'
-            minute : '*/1'
+            minute : '*/5'
         id : "data5u"
         coalesce : 0
         max_instances : 1
